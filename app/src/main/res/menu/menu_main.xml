@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/timer"
+        android:title="@string/main_navigation_timer_title"
+        android:icon="@drawable/ic_timer"/>
+
+    <item
+        android:id="@+id/statistics"
+        android:title="@string/main_navigation_statistics_title"
+        android:icon="@drawable/ic_stat"/>
+
+    <item
+        android:id="@+id/about"
+        android:title="@string/main_navigation_about_title"
+        android:icon="@drawable/ic_more"/>
+</menu>
