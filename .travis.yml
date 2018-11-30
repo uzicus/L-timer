@@ -37,4 +37,5 @@ script :
   - ./gradlew build check
 
 before_install:
+  - yes | sdkmanager "platforms;android-28"
   - chmod +x gradlew
