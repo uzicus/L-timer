@@ -1,12 +1,7 @@
 #!/bin/bash
 
-# 1 - task id
-# 2 - channel name
-# 3 - app display name
-TELEGRAM_BOT_ID=$1;
-TELEGRAM_CHAT_ID=$2;
-FLAVOR_NAME=$3;
-OPTIONS=$4;
+FLAVOR_NAME=$1;
+OPTIONS=$2;
 
 if [[ -z ${TELEGRAM_BOT_ID} ]]
 then
@@ -20,14 +15,18 @@ then
     exit 1;
 fi
 
-#buildNumber=$(git rev-list --count ${CI_BUILD_REF})
-#branchName=$CI_BUILD_REF_NAME
-#commitSHA=${TRAVIS_COMMIT:0:7}
-#commitSubj=${CI_BUILD_REF_SUBJ}
-
 #Build project
 echo "Clean gradle"
-./gradlew clean > /dev/null
+./gradlew clean
+
+buildDescription="
+Version name: $(grep "versionName " ./app/build.gradle | awk '{print $2}' | sed -e 's/^"//' -e 's/"$//')
+Build Number: ${TRAVIS_BUILD_NUMBER}
+Branch: ${TRAVIS_BRANCH}
+Flavor: ${FLAVOR_NAME}
+Commit hash: ${TRAVIS_COMMIT:0:7}
+Commit title: ${TRAVIS_COMMIT_MESSAGE}
+Log is available at the link https://api.travis-ci.com/v3/job/${TRAVIS_JOB_ID}/log.txt"
 
 flavorName=""
 if [[ "$OPTIONS" == "gradle=v3" ]]
@@ -42,7 +41,7 @@ fi
 if [[ "$TRAVIS_BRANCH" == "master" || "$TRAVIS_BRANCH" == "release" ]]
 then
     echo "Build release app"
-    BUILD_NUMBER=${TRAVIS_BUILD_NUMBER} ./gradlew assemble${flavorName}Release > /tmp/app_ci.log 2>&1
+    BUILD_NUMBER=${TRAVIS_BUILD_NUMBER} ./gradlew assemble${flavorName}Release
     apkType="release"
 
     if [[ -z ${FLAVOR_NAME} ]]
@@ -53,7 +52,7 @@ then
     fi
 else
     echo "Build debug app"
-    BUILD_NUMBER=${TRAVIS_BUILD_NUMBER} ./gradlew assemble${flavorName}Debug > /tmp/app_ci.log 2>&1
+    BUILD_NUMBER=${TRAVIS_BUILD_NUMBER} ./gradlew assemble${flavorName}Debug
     apkType="debug"
 
     if [[ -z ${FLAVOR_NAME} ]]
@@ -64,15 +63,6 @@ else
     fi
 fi
 rc=$?
-
-buildDescription="
-Version name: $(grep 'VersionName:' /tmp/app_ci.log | sed 's/VersionName: //g')
-Build Number: ${TRAVIS_BUILD_NUMBER}
-Branch: ${TRAVIS_BRANCH}
-Flavor: ${FLAVOR_NAME}
-Commit hash: ${TRAVIS_COMMIT:0:7}
-Commit title: ${TRAVIS_COMMIT_MESSAGE}
-Log is available at the link https://api.travis-ci.com/v3/job/${TRAVIS_JOB_ID}/log.txt"
 
 if [[ ${rc} != 0 ]]
 then

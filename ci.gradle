@@ -6,8 +6,3 @@ static Integer getBuildNumber() {
     }
     return 1
 }
-
-gradle.buildFinished {
-    println('VersionName: ' + android.defaultConfig.versionName)
-    println('VersionCode: ' + android.defaultConfig.versionCode)
-}
