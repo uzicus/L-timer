@@ -35,7 +35,7 @@ cache:
     - $HOME/.android/build-cache
 
 script :
-  - ./gradlew build check
+  - bash ./build.sh 792666621:AAElCDptqnb9ViQdCxSyFn6gPAN-nXGkuOc -1001228305673 dev gradle=v3
 
 before_install:
   - yes | sdkmanager "platforms;android-28"
