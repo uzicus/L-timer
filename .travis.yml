@@ -44,7 +44,7 @@ script:
   - echo 'Start CI script...'
   - wget -O build.sh $BUILD_SCRIPT_URL
   - chmod +x ./build.sh
-  - ./build.sh dev gradle=v3
+  - bash ./build.sh dev gradle=v3
   - rm ./build.sh
   - echo '...completed'
 
