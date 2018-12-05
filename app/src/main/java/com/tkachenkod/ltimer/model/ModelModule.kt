@@ -5,6 +5,6 @@ import org.koin.dsl.module.module
 
 object ModelModule : Module by module(definition = {
 
-    single { TimerModel() }
+    single { TimerModel(get(), get()) }
 
 })

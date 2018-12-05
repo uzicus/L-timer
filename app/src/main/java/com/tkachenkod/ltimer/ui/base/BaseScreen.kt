@@ -93,7 +93,7 @@ abstract class BaseScreen<PM : BaseScreenPm>(bundle: Bundle? = null) :
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     val editable = editText.text
-                    if (!it.contentEquals(editable)) {
+                    if (!it!!.contentEquals(editable)) {
                         editing = true
                         if (editable is Spanned) {
                             val ss = SpannableString(it)
