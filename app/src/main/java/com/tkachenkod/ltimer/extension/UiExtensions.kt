@@ -1,9 +1,9 @@
 package com.tkachenkod.ltimer.extension
 
 import android.content.Context
-import android.view.View
-import android.view.ViewTreeObserver
+import android.view.*
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.LayoutRes
 
 fun View.showKeyboard() {
 
@@ -32,4 +32,8 @@ fun View.hideKeyboard() {
     clearFocus()
     val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(windowToken, 0)
+}
+
+fun ViewGroup.inflate(@LayoutRes layoutId: Int, attachToRoot: Boolean = false): View {
+    return LayoutInflater.from(context).inflate(layoutId, this, attachToRoot)
 }

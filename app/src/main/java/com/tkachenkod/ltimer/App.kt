@@ -2,6 +2,7 @@ package com.tkachenkod.ltimer
 
 import android.app.Application
 import com.jakewharton.threetenabp.AndroidThreeTen
+import com.tkachenkod.ltimer.database.DatabaseModule
 import com.tkachenkod.ltimer.model.ModelModule
 import org.koin.android.ext.android.startKoin
 import timber.log.Timber
@@ -13,7 +14,11 @@ class App : Application() {
 
         AndroidThreeTen.init(this)
 
-        startKoin(applicationContext, listOf(AppModule, ModelModule))
+        startKoin(applicationContext, listOf(
+            AppModule,
+            DatabaseModule,
+            ModelModule
+        ))
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
