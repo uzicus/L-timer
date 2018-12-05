@@ -1,9 +1,17 @@
 package com.tkachenkod.ltimer.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "tasks")
 data class Task(
-    val id: String,
+
+    @ColumnInfo(name = "id")
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
+
+    @ColumnInfo(name = "name")
     val name: String
+
 )

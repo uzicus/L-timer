@@ -1,12 +1,24 @@
 package com.tkachenkod.ltimer.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
-import org.threeten.bp.Instant
+import androidx.room.PrimaryKey
+import org.threeten.bp.OffsetDateTime
 
 @Entity(tableName = "time_records")
 data class TimeRecord(
-    val id: String,
-    val name: String,
-    val startTime: Instant,
-    val endTime: Instant? = null
+
+    @ColumnInfo(name = "id")
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
+
+    @ColumnInfo(name = "start_time")
+    val startTime: OffsetDateTime,
+
+    @ColumnInfo(name = "end_time")
+    val endTime: OffsetDateTime? = null,
+
+    @ColumnInfo(name = "task_id")
+    val taskId: Long? = null
+
 )

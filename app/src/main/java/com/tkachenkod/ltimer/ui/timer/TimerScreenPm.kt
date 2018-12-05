@@ -1,5 +1,6 @@
 package com.tkachenkod.ltimer.ui.timer
 
+import com.tkachenkod.ltimer.entity.Task
 import com.tkachenkod.ltimer.extension.inject
 import com.tkachenkod.ltimer.model.TimerModel
 import com.tkachenkod.ltimer.ui.base.BaseScreenPm
@@ -23,6 +24,7 @@ class TimerScreenPm : BaseScreenPm() {
         SAVING
     }
 
+    val lastTasks = State(emptyList<Task>())
     val currentState = State(ScreenState.DASHBOARD)
     val taskName = State<String>()
     val taskNameInput = inputControl()
@@ -32,9 +34,14 @@ class TimerScreenPm : BaseScreenPm() {
 
     val buttonClicks = Action<Unit>()
     val savingAnimationEnd = Action<Unit>()
+    val lastTasksItemClicks = Action<Task>()
 
     override fun onCreate() {
         super.onCreate()
+
+        timerModel.lastTasks()
+            .subscribe(lastTasks.consumer)
+            .untilDestroy()
 
         taskNameInput.text.observable
             .subscribe(taskName.consumer)
@@ -51,7 +58,7 @@ class TimerScreenPm : BaseScreenPm() {
                     ScreenState.ENTERING_TASK -> {
                         if (taskName.isNotBlank()) {
                             currentState.consumer.accept(ScreenState.RECORDING)
-                            startTimer()
+                            startTimer(taskName)
                         } else {
                             shakeTaskName.consumer.accept(Unit)
                         }
@@ -74,12 +81,12 @@ class TimerScreenPm : BaseScreenPm() {
             .untilDestroy()
     }
 
-    private fun startTimer() {
-        timerModel.start("123")
+    private fun startTimer(taskName: String) {
+        timerModel.start(taskName)
         timerDisposable = Observable.interval(0, 1, TimeUnit.SECONDS)
             .map {
                 val value = timerModel.currentTimer?.let {
-                    Instant.now().epochSecond - it.startTime.epochSecond
+                    Instant.now().epochSecond - it.toEpochSecond()
                 } ?: 0
 
                 String.format(

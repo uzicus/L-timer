@@ -19,6 +19,7 @@
         tools:backgroundTint="@sample/material_colors"/>
 
     <TextView
+        android:id="@+id/lastTaskNameText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

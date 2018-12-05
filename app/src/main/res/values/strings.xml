@@ -9,6 +9,5 @@
     <string name="timer_add_task_title">add task</string>
     <string name="timer_start_title">start</string>
     <string name="timer_stop_title">stop</string>
-    <string name="timer_done_title">done</string>
     <string name="timer_last_tasks_title">last tasks</string>
 </resources>

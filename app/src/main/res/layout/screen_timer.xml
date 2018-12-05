@@ -107,6 +107,7 @@
         android:layout_marginBottom="8dp"
         android:autoSizeTextType="uniform"
         android:fontFamily="@font/montserrat_bold"
+        android:fontFeatureSettings="tnum"
         android:gravity="center|bottom"
         android:maxLines="1"
         android:paddingStart="16dp"
@@ -114,7 +115,6 @@
         android:textColor="@android:color/white"
         android:textSize="28sp"
         android:visibility="invisible"
-        android:fontFeatureSettings="tnum"
         tools:targetApi="o"
         tools:text="06:55"/>
 
@@ -131,30 +131,40 @@
         android:textSize="14sp"
         android:visibility="invisible"/>
 
-    <TextView
-        android:id="@+id/lastTasksTitleText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/montserrat_bold"
-        android:text="@string/timer_last_tasks_title"
-        android:textColor="@color/black_translucent_50"
-        android:textSize="14sp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/endGuideline"
-        app:layout_constraintStart_toStartOf="@+id/startGuideline"
-        app:layout_constraintTop_toTopOf="@+id/middleVerticalGuideline"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/lastTasksRecyclerView"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/contentLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:visibility="gone"
+        android:animateLayoutChanges="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/endGuideline"
-        app:layout_constraintStart_toStartOf="@id/startGuideline"
-        app:layout_constraintTop_toBottomOf="@+id/lastTasksTitleText"
-        tools:listitem="@layout/item_last_task"/>
+        app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+        app:layout_constraintStart_toStartOf="@+id/startGuideline"
+        app:layout_constraintTop_toTopOf="@+id/middleVerticalGuideline">
+
+        <TextView
+            android:id="@+id/lastTasksTitleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="@string/timer_last_tasks_title"
+            android:textColor="@color/black_translucent_50"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lastTasksRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lastTasksTitleText"
+            tools:listitem="@layout/item_last_task"
+            tools:visibility="visible"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
