@@ -28,3 +28,7 @@ inline fun Router.goTo(screen: Controller) {
                     .tag(screen::class.java.name)
     )
 }
+
+fun Router.currentScreen(): Controller? {
+    return backstack[backstack.size - 1].controller()
+}

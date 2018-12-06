@@ -44,6 +44,10 @@ class MainScreen : BaseScreen<MainScreenPm>() {
         override fun getCount() = Page.values().size
     }
 
+    override fun handleBack(): Boolean {
+        return pagerAdapter.getRouter(viewPager.currentItem)?.handleBack() ?: super.handleBack()
+    }
+
     override fun onInitView(view: View, savedViewState: Bundle?) {
         super.onInitView(view, savedViewState)
 
