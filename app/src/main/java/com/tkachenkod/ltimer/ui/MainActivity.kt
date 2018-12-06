@@ -27,6 +27,12 @@ class MainActivity : AppCompatActivity(), NavigationMessageHandler {
         }
     }
 
+    override fun onBackPressed() {
+        if (!router.handleBack()) {
+            super.onBackPressed()
+        }
+    }
+
     override fun handleNavigationMessage(message: NavigationMessage): Boolean {
         when (message) {
             is BackMessage -> {

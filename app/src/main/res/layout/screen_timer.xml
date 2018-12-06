@@ -43,35 +43,45 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="200dp"/>
 
-    <TextView
-        android:id="@+id/taskText"
+    <FrameLayout
+        android:id="@+id/taskNameLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/montserrat_bold"
-        android:gravity="start"
-        android:textColor="?colorPrimary"
-        android:textSize="28sp"
-        tools:text="try using time logger"
-        tools:visibility="invisible"/>
+        android:animateLayoutChanges="true">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/taskInput"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:hintEnabled="false">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/taskEdit"
+        <TextView
+            android:id="@+id/taskText"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_bold"
-            android:hint="@string/timer_task_hint"
-            android:inputType="textMultiLine"
+            android:gravity="start"
             android:textColor="?colorPrimary"
-            android:textSize="18sp"/>
+            android:textSize="28sp"
+            android:layout_gravity="center"
+            tools:text="try using time logger"
+            tools:visibility="invisible"/>
 
-    </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/taskInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/taskEdit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:fontFamily="@font/montserrat_bold"
+                android:hint="@string/timer_task_hint"
+                android:inputType="textMultiLine"
+                android:textColor="?colorPrimary"
+                android:textSize="18sp"
+                android:imeOptions="actionDone"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+    </FrameLayout>
 
     <View
         android:id="@+id/button"
