@@ -21,10 +21,3 @@ inline fun Router.setRoot(screen: Controller) {
                     .tag(screen::class.java.name)
     )
 }
-
-inline fun Router.goTo(screen: Controller) {
-    pushController(
-            RouterTransaction.with(screen)
-                    .tag(screen::class.java.name)
-    )
-}
