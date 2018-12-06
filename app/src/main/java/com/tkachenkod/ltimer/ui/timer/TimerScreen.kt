@@ -180,5 +180,4 @@ class TimerScreen : BaseScreen<TimerScreenPm>() {
         }
 
     }
-
 }
