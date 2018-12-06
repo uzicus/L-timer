@@ -19,6 +19,6 @@ data class TimeRecord(
     val endTime: OffsetDateTime? = null,
 
     @ColumnInfo(name = "task_id")
-    val taskId: Long? = null
+    val taskId: Long
 
 )
