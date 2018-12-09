@@ -1,5 +1,6 @@
 import Config.Android
 import Config.Libs
+import org.gradle.kotlin.dsl.implementation
 
 plugins {
     id("com.android.application")
@@ -76,6 +77,10 @@ dependencies {
     implementation(Libs.androidx_appcompat)
     implementation(Libs.androidx_core_ktx)
     implementation(Libs.androidx_constraintlayout)
+    implementation(Libs.androidx_navigation_fragment)
+    implementation(Libs.androidx_navigation_ui)
+    implementation(Libs.androidx_lifecycle_extensions)
+    kapt(Libs.androidx_lifecycle_compiler)
 
     implementation(Libs.androidx_room_runtime)
     implementation(Libs.androidx_room_rxjava)
@@ -90,14 +95,12 @@ dependencies {
     implementation(Libs.rxbinding_viewpager)
     implementation(Libs.rxbinding_material)
 
-    implementation(Libs.koin)
-
-    implementation(Libs.conductor)
-    implementation(Libs.conductor_support)
-
-    implementation(Libs.rxpm)
+    implementation(Libs.koinAndroid)
+    implementation(Libs.koinAndroidViewModel)
 
     implementation(Libs.threetenabp)
+
+    implementation(Libs.livedata_ktx)
 
     testImplementation(Config.Libs.junit)
     androidTestImplementation(Config.Libs.room_test)

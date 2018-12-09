@@ -2,49 +2,28 @@ package com.tkachenkod.ltimer.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.bluelinelabs.conductor.Conductor
-import com.bluelinelabs.conductor.Router
+import androidx.navigation.findNavController
 import com.tkachenkod.ltimer.R
-import com.tkachenkod.ltimer.extension.back
-import com.tkachenkod.ltimer.extension.setRoot
-import com.tkachenkod.ltimer.ui.main.MainScreen
-import kotlinx.android.synthetic.main.layout_container.*
-import me.dmdev.rxpm.navigation.NavigationMessage
-import me.dmdev.rxpm.navigation.NavigationMessageHandler
+import com.tkachenkod.ltimer.ui.base.BackClickHandler
+import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), NavigationMessageHandler {
-
-    private lateinit var router: Router
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.layout_container)
+        setContentView(R.layout.activity_main)
+    }
 
-        router = Conductor.attachRouter(this, container, savedInstanceState)
-
-        if (router.hasRootController().not()) {
-            handleNavigationMessage(StartUpMessage())
-        }
+    override fun onSupportNavigateUp(): Boolean {
+        return findNavController(R.id.navHostFragment).navigateUp()
     }
 
     override fun onBackPressed() {
-        if (!router.handleBack()) {
+        val currentFragment = navHostFragment.childFragmentManager.primaryNavigationFragment
+
+        if (currentFragment is BackClickHandler
+            && currentFragment.onBackPressed()) {
             super.onBackPressed()
         }
-    }
-
-    override fun handleNavigationMessage(message: NavigationMessage): Boolean {
-        when (message) {
-            is BackMessage -> {
-                if (router.back())
-                else super.onBackPressed()
-            }
-
-            is StartUpMessage -> {
-                router.setRoot(MainScreen())
-            }
-        }
-
-        return true
     }
 }

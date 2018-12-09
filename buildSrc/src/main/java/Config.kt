@@ -2,7 +2,7 @@
 object Config {
 
     object Versions {
-        val kotlin_version = "1.3.10"
+        val kotlin_version = "1.3.11"
         val android_plugin_version = "3.4.0-alpha07"
 
         val support_lib = "28.0.0"
@@ -11,7 +11,8 @@ object Config {
         val androidx_legacy = "1.0.0"
         val androidx_constraintlayout = "2.0.0-alpha2"
         val androidx_room = "2.1.0-alpha02"
-        val androidx_arch_core = "2.0.0"
+        val androidx_arch = "2.0.0"
+        val androidx_navigation = "1.0.0-alpha08"
 
         val google_material = "1.0.0"
 
@@ -26,9 +27,7 @@ object Config {
 
         val koin = "1.0.2"
 
-        val conductor = "2.1.6-SNAPSHOT"
-
-        val rxpm = "1.2.3"
+        val livedata_ktx = "2.0.1"
 
         val junit = "4.12"
         val junit_runner = "1.0.2"
@@ -58,6 +57,10 @@ object Config {
         val androidx_core_ktx = "androidx.core:core-ktx:${Versions.androidx_core}"
         val androidx_legacy = "androidx.legacy:legacy-support-v4:${Versions.androidx_legacy}"
         val androidx_constraintlayout = "androidx.constraintlayout:constraintlayout:${Versions.androidx_constraintlayout}"
+        val androidx_navigation_fragment = "android.arch.navigation:navigation-fragment-ktx:${Versions.androidx_navigation}"
+        val androidx_navigation_ui = "android.arch.navigation:navigation-ui-ktx:${Versions.androidx_navigation}"
+        val androidx_lifecycle_extensions = "androidx.lifecycle:lifecycle-extensions:${Versions.androidx_arch}"
+        val androidx_lifecycle_compiler = "androidx.lifecycle:lifecycle-compiler:${Versions.androidx_arch}"
         val google_material = "com.google.android.material:material:${Versions.google_material}"
 
         val androidx_room_runtime = "androidx.room:room-runtime:${Versions.androidx_room}"
@@ -75,21 +78,17 @@ object Config {
         val rxbinding_material = "com.jakewharton.rxbinding3:rxbinding-material:${Versions.rxbinding}"
 
         //DI
-        val koin = "org.koin:koin-android:${Versions.koin}"
-
-        //Conductor (lightweights alternative of fragments)
-        val conductor = "com.bluelinelabs:conductor:${Versions.conductor}"
-        val conductor_support = "com.bluelinelabs:conductor-support:${Versions.conductor}"
-
-        //Reactive implementation of Presentation Model pattern
-        val rxpm = "me.dmdev.rxpm:rxpm:${Versions.rxpm}"
+        val koinAndroid = "org.koin:koin-android:${Versions.koin}"
+        val koinAndroidViewModel = "org.koin:koin-android-viewmodel:${Versions.koin}"
 
         val threetenabp = "com.jakewharton.threetenabp:threetenabp:${Versions.threetenabp}"
+
+        val livedata_ktx = "com.shopify:livedata-ktx:${Versions.livedata_ktx}"
 
         // Test
         val koin_test = "org.koin:koin-test:${Versions.koin}"
         val room_test = "androidx.room:room-testing:${Versions.androidx_room}"
-        val androidx_arch_core_test = "androidx.arch.core:core-testing:${Versions.androidx_arch_core}"
+        val androidx_arch_core_test = "androidx.arch.core:core-testing:${Versions.androidx_arch}"
         val junit = "junit:junit:${Versions.junit}"
         val junit_runner = "com.android.support.test:runner:${Versions.junit_runner}"
         val espresso_core = "com.android.support.test.espresso:espresso-core:${Versions.espresso_core}"
