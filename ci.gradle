@@ -1,8 +1,0 @@
-android.defaultConfig.versionCode = getBuildNumber()
-
-static Integer getBuildNumber() {
-    if (System.env.BUILD_NUMBER != null) {
-        return Integer.parseInt(System.env.TRAVIS_BUILD_NUMBER)
-    }
-    return 1
-}

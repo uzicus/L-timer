@@ -53,11 +53,11 @@
             android:id="@+id/taskText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:fontFamily="@font/montserrat_bold"
             android:gravity="start"
             android:textColor="?colorPrimary"
             android:textSize="28sp"
-            android:layout_gravity="center"
             tools:text="try using time logger"
             tools:visibility="invisible"/>
 
@@ -75,10 +75,10 @@
                 android:layout_gravity="center"
                 android:fontFamily="@font/montserrat_bold"
                 android:hint="@string/timer_task_hint"
+                android:imeOptions="actionDone"
                 android:inputType="textMultiLine"
                 android:textColor="?colorPrimary"
-                android:textSize="18sp"
-                android:imeOptions="actionDone"/>
+                android:textSize="18sp"/>
 
         </com.google.android.material.textfield.TextInputLayout>
     </FrameLayout>
