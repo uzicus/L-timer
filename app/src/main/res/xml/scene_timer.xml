@@ -83,28 +83,6 @@
             app:layout_constraintStart_toStartOf="@+id/startGuideline"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <!--
-        <Constraint
-            android:id="@+id/taskInput"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/middleVerticalGuideline"
-            app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
-            app:layout_constraintStart_toStartOf="@+id/startGuideline"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <Constraint
-            android:id="@+id/taskText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/middleVerticalGuideline"
-            app:layout_constraintEnd_toStartOf="@+id/centerSecondGuideline"
-            app:layout_constraintStart_toStartOf="@+id/startGuideline"
-            app:layout_constraintTop_toTopOf="parent"/>
-        -->
-
         <Constraint
             android:id="@+id/button"
             android:layout_width="0dp"
@@ -171,28 +149,6 @@
             app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
             app:layout_constraintStart_toStartOf="@+id/startGuideline"
             app:layout_constraintTop_toTopOf="parent"/>
-
-        <!--
-        <Constraint
-            android:id="@+id/taskInput"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/middleVerticalGuideline"
-            app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
-            app:layout_constraintStart_toStartOf="@+id/startGuideline"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <Constraint
-            android:id="@+id/taskText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/middleVerticalGuideline"
-            app:layout_constraintEnd_toStartOf="@+id/centerSecondGuideline"
-            app:layout_constraintStart_toStartOf="@+id/startGuideline"
-            app:layout_constraintTop_toTopOf="parent"/>
-        -->
 
         <Constraint
             android:id="@+id/button"
@@ -261,28 +217,6 @@
             app:layout_constraintStart_toStartOf="@+id/startGuideline"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <!--
-        <Constraint
-            android:id="@+id/taskInput"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/middleVerticalGuideline"
-            app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
-            app:layout_constraintStart_toStartOf="@+id/startGuideline"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <Constraint
-            android:id="@+id/taskText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/middleVerticalGuideline"
-            app:layout_constraintEnd_toStartOf="@+id/centerSecondGuideline"
-            app:layout_constraintStart_toStartOf="@+id/startGuideline"
-            app:layout_constraintTop_toTopOf="parent"/>
-        -->
-
         <Constraint
             android:id="@+id/button"
             android:layout_width="0dp"
@@ -349,28 +283,6 @@
             app:layout_constraintEnd_toStartOf="@+id/centerSecondGuideline"
             app:layout_constraintStart_toStartOf="@+id/startGuideline"
             app:layout_constraintTop_toTopOf="parent"/>
-
-        <!--
-        <Constraint
-            android:id="@+id/taskInput"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/middleVerticalGuideline"
-            app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
-            app:layout_constraintStart_toStartOf="@+id/startGuideline"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <Constraint
-            android:id="@+id/taskText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/middleVerticalGuideline"
-            app:layout_constraintEnd_toStartOf="@+id/centerSecondGuideline"
-            app:layout_constraintStart_toStartOf="@+id/startGuideline"
-            app:layout_constraintTop_toTopOf="parent"/>
-        -->
 
         <Constraint
             android:id="@+id/button"
@@ -439,28 +351,6 @@
             app:layout_constraintStart_toStartOf="@+id/startGuideline"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <!--
-        <Constraint
-            android:id="@+id/taskInput"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/middleVerticalGuideline"
-            app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
-            app:layout_constraintStart_toStartOf="@+id/startGuideline"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <Constraint
-            android:id="@+id/taskText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/middleVerticalGuideline"
-            app:layout_constraintEnd_toStartOf="@+id/centerSecondGuideline"
-            app:layout_constraintStart_toStartOf="@+id/startGuideline"
-            app:layout_constraintTop_toTopOf="parent"/>
-        -->
-
         <Constraint
             android:id="@+id/button"
             android:layout_width="0dp"
@@ -527,28 +417,6 @@
             app:layout_constraintEnd_toEndOf="@+id/button"
             app:layout_constraintStart_toStartOf="@+id/button"
             app:layout_constraintTop_toTopOf="@+id/button"/>
-
-        <!--
-        <Constraint
-            android:id="@+id/taskInput"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/middleVerticalGuideline"
-            app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
-            app:layout_constraintStart_toStartOf="@+id/startGuideline"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <Constraint
-            android:id="@+id/taskText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button"/>
-            -->
 
         <Constraint
             android:id="@+id/button"

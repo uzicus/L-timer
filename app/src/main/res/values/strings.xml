@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">L-timer</string>
-    
+
     <string name="main_navigation_timer_title">timer</string>
     <string name="main_navigation_statistics_title">stat</string>
     <string name="main_navigation_about_title">about</string>
-    
+
     <string name="timer_task_hint">what are you working on?</string>
     <string name="timer_add_task_title">add task</string>
     <string name="timer_start_title">start</string>
