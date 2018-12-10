@@ -1,9 +1,11 @@
 package com.tkachenkod.ltimer.ui.main
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.tkachenkod.ltimer.R
 import com.tkachenkod.ltimer.ui.about.AboutFragment
 import com.tkachenkod.ltimer.ui.base.BackClickHandler
@@ -15,6 +17,8 @@ import kotlinx.android.synthetic.main.fragment_main.*
 class MainFragment : BaseFragment(), BackClickHandler {
 
     override val screenLayout = R.layout.fragment_main
+
+    private var prevMenuItem: MenuItem? = null
 
     private enum class Page {
         TIMER,
@@ -56,6 +60,25 @@ class MainFragment : BaseFragment(), BackClickHandler {
 
             true
         }
+
+        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {}
+
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {}
+
+            override fun onPageSelected(position: Int) {
+                prevMenuItem?.isChecked = false
+
+                prevMenuItem = bottomNavigation.menu.getItem(position).apply {
+                    isChecked = true
+                }
+            }
+
+        })
     }
 
     override fun onBackPressed(): Boolean {
