@@ -4,16 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.shopify.livedataktx.SingleLiveData
 import com.tkachenkod.ltimer.entity.Task
+import com.tkachenkod.ltimer.entity.TimeRecord
 import com.tkachenkod.ltimer.model.TimerModel
 import com.tkachenkod.ltimer.ui.base.BaseViewModel
 import io.reactivex.Maybe
 import io.reactivex.Observable
+import io.reactivex.rxkotlin.Maybes.zip
 import io.reactivex.rxkotlin.withLatestFrom
 import java.util.concurrent.TimeUnit
 
 class TimerViewModel(
     private val timerModel: TimerModel
 ): BaseViewModel() {
+
+    private val cancelableSavedTimeRecords = mutableListOf<TimeRecord>()
 
     private val _lastTasks = MutableLiveData<List<Task>>()
     private val _taskName = MutableLiveData<String>()
@@ -22,6 +26,7 @@ class TimerViewModel(
     private val _screenState = MutableLiveData<ScreenState>()
     private val _timerSeconds = MutableLiveData<Long>()
     private val _shakeTaskName = SingleLiveData<Unit>()
+    private val _showTaskSavedMsg = SingleLiveData<Task>()
 
     enum class TaskNameState {
         ENTERING,
@@ -42,6 +47,7 @@ class TimerViewModel(
     val screenState: LiveData<ScreenState> = _screenState
     val timerSeconds: LiveData<Long> = _timerSeconds
     val shakeTaskName: LiveData<Unit> = _shakeTaskName
+    val showTaskSavedMsg: LiveData<Task> = _showTaskSavedMsg
 
     init {
 
@@ -144,6 +150,22 @@ class TimerViewModel(
 
     }
 
+    fun cancelSave(task: Task) {
+        val doCancelTimeRecord = cancelableSavedTimeRecords.find { it.taskId == task.id }
+
+        if (doCancelTimeRecord != null) {
+            timerModel.delete(doCancelTimeRecord.id)
+                .subscribe()
+                .untilDestroy()
+        }
+    }
+
+    fun taskSavedMsgDismissed(task: Task) {
+        cancelableSavedTimeRecords.removeAll {
+            it.taskId == task.id
+        }
+    }
+
     fun onBackPressed(): Boolean {
         when {
             _screenState.value == ScreenState.ENTERING_TASK -> {
@@ -165,15 +187,27 @@ class TimerViewModel(
     }
 
     private fun stopTimer() {
-        timerModel.currentTimeRecord()
+        val currentTimeRecord = timerModel.currentTimeRecord()
             .firstOrError()
             .flatMapMaybe { currentTimeRecord ->
                 currentTimeRecord.valueOrNull?.let { Maybe.just(it) } ?: Maybe.empty()
             }
-            .flatMapCompletable { currentTimeRecord ->
-                timerModel.stop(currentTimeRecord.id)
+
+        val currentTask = timerModel.currentTask()
+            .firstOrError()
+            .flatMapMaybe { currentTask ->
+                currentTask.valueOrNull?.let { Maybe.just(it) } ?: Maybe.empty()
             }
-            .subscribe()
+
+        zip(currentTimeRecord, currentTask)
+            .flatMapSingle { (currentTimeRecord, currentTask) ->
+                timerModel.stop(currentTimeRecord.id)
+                    .toSingleDefault(currentTimeRecord to currentTask)
+            }
+            .subscribe { (savedTimeRecord, savedTask) ->
+                cancelableSavedTimeRecords.add(savedTimeRecord)
+                _showTaskSavedMsg.postValue(savedTask)
+            }
             .untilDestroy()
     }
 
