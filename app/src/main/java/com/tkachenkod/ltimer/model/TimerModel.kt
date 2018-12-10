@@ -100,4 +100,10 @@ class TimerModel(
             .subscribeOn(Schedulers.io())
             .ignoreElement()
     }
+
+    fun delete(timeRecordId: Long): Completable {
+        return timeRecordDao.findById(timeRecordId)
+            .flatMapCompletable(timeRecordDao::delete)
+            .subscribeOn(Schedulers.io())
+    }
 }

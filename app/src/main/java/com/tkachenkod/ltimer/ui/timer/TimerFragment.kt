@@ -12,12 +12,10 @@ import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionManager
+import com.google.android.material.snackbar.Snackbar
 import com.tkachenkod.ltimer.R
 import com.tkachenkod.ltimer.entity.Task
-import com.tkachenkod.ltimer.extension.hideKeyboard
-import com.tkachenkod.ltimer.extension.inflate
-import com.tkachenkod.ltimer.extension.showKeyboard
-import com.tkachenkod.ltimer.extension.textChangedListener
+import com.tkachenkod.ltimer.extension.*
 import com.tkachenkod.ltimer.ui.base.BackClickHandler
 import com.tkachenkod.ltimer.ui.base.BaseFragment
 import com.tkachenkod.ltimer.ui.base.adapter.BaseListAdapter
@@ -115,6 +113,28 @@ class TimerFragment : BaseFragment(), BackClickHandler {
         viewModel.shakeTaskName observe {
             val animation = AnimationUtils.loadAnimation(taskInput.context, R.anim.shake)
             taskInput.startAnimation(animation)
+        }
+
+        viewModel.showTaskSavedMsg observe { savedTask ->
+            val title = resources.getString(R.string.timer_task_saved_msg_title)
+                .spannable()
+                .applyColor(resources.color(R.color.white_translucent_50))
+
+            val taskName = savedTask.name
+                .spannable()
+                .applyColor(resources.color(android.R.color.white))
+
+            val msg = resources.getString(R.string.timer_task_saved_msg_format)
+                .format(title, taskName)
+
+            Snackbar.make(rootLayout, msg, Snackbar.LENGTH_LONG)
+                .setAction(R.string.timer_don_t_save_title) {
+                    viewModel.cancelSave(savedTask)
+                }
+                .onDismissed {
+                    viewModel.taskSavedMsgDismissed(savedTask)
+                }
+                .show()
         }
 
         button.setOnClickListener { viewModel.buttonClicks() }
