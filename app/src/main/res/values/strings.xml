@@ -10,4 +10,7 @@
     <string name="timer_start_title">start</string>
     <string name="timer_stop_title">stop</string>
     <string name="timer_last_tasks_title">last tasks</string>
+    <string name="timer_task_saved_msg_title">saved:</string>
+    <string name="timer_task_saved_msg_format">%1$s \n%2$s</string>
+    <string name="timer_don_t_save_title">don’t save</string>
 </resources>

@@ -21,4 +21,7 @@ interface TimeRecordDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(timeRecord: TimeRecord): Single<Long>
+
+    @Delete
+    fun delete(timeRecord: TimeRecord): Completable
 }

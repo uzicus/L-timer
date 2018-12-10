@@ -7,7 +7,7 @@
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp"
     android:orientation="horizontal"
-    tools:showIn="@layout/screen_timer">
+    tools:showIn="@layout/fragment_timer">
 
     <View
         android:layout_width="20dp"
@@ -25,7 +25,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:drawableStart="@drawable/bg_circle"
-        android:fontFamily="@font/montserrat_bold"
         android:textSize="14sp"
         tools:text="@sample/task_names"
         tools:textColor="@sample/material_colors"/>

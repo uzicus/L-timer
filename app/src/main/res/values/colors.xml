@@ -2,10 +2,12 @@
 <resources>
     <color name="colorPrimary">#4285F4</color>
     <color name="colorPrimaryDark">#4254f4</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#FF1B1B</color>
 
     <color name="colorControlNormal">#804285F4</color>
     <color name="colorControlActivated">@color/colorPrimary</color>
+
+    <color name="white_translucent_50">#80FFFFFF</color>
 
     <color name="black_translucent_15">#26000000</color>
     <color name="black_translucent_50">#80000000</color>
