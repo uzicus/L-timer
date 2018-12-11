@@ -18,6 +18,12 @@ class TimerModel(
     private val timeRecordDao: TimeRecordDao
 ) {
 
+    fun tasksWithTimeRecords(): Observable<List<TaskWithTimeRecords>> {
+        return taskDao.taskWithTimeRecords()
+            .subscribeOn(Schedulers.io())
+            .toObservable()
+    }
+
     fun lastTasks(): Observable<List<Task>> {
         return taskDao.taskWithTimeRecords()
             .map { tasksWithTimeRecords ->

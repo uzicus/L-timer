@@ -13,4 +13,10 @@
     <string name="timer_task_saved_msg_title">saved:</string>
     <string name="timer_task_saved_msg_format">%1$s \n%2$s</string>
     <string name="timer_don_t_save_title">don’t save</string>
+
+    <string name="statistics_day_label">day</string>
+    <string name="statistics_week_label">week</string>
+    <string name="statistics_month_label">month</string>
+    <string name="statistics_year_label">year</string>
+
 </resources>
