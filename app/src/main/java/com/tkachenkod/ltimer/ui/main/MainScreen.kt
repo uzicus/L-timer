@@ -7,14 +7,17 @@ import android.view.View
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.tkachenkod.ltimer.R
-import com.tkachenkod.ltimer.ui.about.AboutFragment
-import com.tkachenkod.ltimer.ui.base.BackClickHandler
-import com.tkachenkod.ltimer.ui.base.BaseFragment
+import com.tkachenkod.ltimer.ui.about.AboutScreen
+import com.tkachenkod.ltimer.ui.base.BackHandler
+import com.tkachenkod.ltimer.ui.base.BaseScreenPm
+import com.tkachenkod.ltimer.ui.base.BaseScreen
 import com.tkachenkod.ltimer.ui.statistics.StatisticsFragment
-import com.tkachenkod.ltimer.ui.timer.TimerFragment
+import com.tkachenkod.ltimer.ui.timer.TimerScreen
 import kotlinx.android.synthetic.main.fragment_main.*
 
-class MainFragment : BaseFragment(), BackClickHandler {
+class MainScreen : BaseScreen<BaseScreenPm>(), BackHandler {
+
+    override fun providePresentationModel() = BaseScreenPm()
 
     override val screenLayout = R.layout.fragment_main
 
@@ -33,9 +36,9 @@ class MainFragment : BaseFragment(), BackClickHandler {
 
             override fun getItem(position: Int): Fragment {
                 return when(Page.values()[position]) {
-                    Page.TIMER -> TimerFragment()
+                    Page.TIMER -> TimerScreen()
                     Page.STATISTICS -> StatisticsFragment()
-                    Page.ABOUT -> AboutFragment()
+                    Page.ABOUT -> AboutScreen()
                 }
             }
 
@@ -81,14 +84,18 @@ class MainFragment : BaseFragment(), BackClickHandler {
         })
     }
 
-    override fun onBackPressed(): Boolean {
+    override fun handleBack(): Boolean {
         val fragmentTag = "android:switcher:${viewPager.id}:${viewPager.currentItem}"
         val fragment = childFragmentManager.findFragmentByTag(fragmentTag)
 
-        if (fragment != null && fragment is BackClickHandler) {
-            return fragment.onBackPressed()
+        if (fragment != null && fragment is BackHandler) {
+            return fragment.handleBack()
         }
 
         return true
+    }
+
+    override fun onBindPresentationModel(pm: BaseScreenPm) {
+
     }
 }

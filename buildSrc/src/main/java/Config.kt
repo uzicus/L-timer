@@ -27,7 +27,7 @@ object Config {
 
         val koin = "1.0.2"
 
-        val livedata_ktx = "2.0.1"
+        val rxpm = "1.2.3"
 
         val MPAndroidChart = "v3.1.0-alpha"
 
@@ -61,8 +61,6 @@ object Config {
         val androidx_constraintlayout = "androidx.constraintlayout:constraintlayout:${Versions.androidx_constraintlayout}"
         val androidx_navigation_fragment = "android.arch.navigation:navigation-fragment-ktx:${Versions.androidx_navigation}"
         val androidx_navigation_ui = "android.arch.navigation:navigation-ui-ktx:${Versions.androidx_navigation}"
-        val androidx_lifecycle_extensions = "androidx.lifecycle:lifecycle-extensions:${Versions.androidx_arch}"
-        val androidx_lifecycle_compiler = "androidx.lifecycle:lifecycle-compiler:${Versions.androidx_arch}"
         val google_material = "com.google.android.material:material:${Versions.google_material}"
 
         val androidx_room_runtime = "androidx.room:room-runtime:${Versions.androidx_room}"
@@ -85,7 +83,7 @@ object Config {
 
         val threetenabp = "com.jakewharton.threetenabp:threetenabp:${Versions.threetenabp}"
 
-        val livedata_ktx = "com.shopify:livedata-ktx:${Versions.livedata_ktx}"
+        val rxpm = "me.dmdev.rxpm:rxpm:${Versions.rxpm}"
 
         // Chart
         val MPAndroidChart = "com.github.PhilJay:MPAndroidChart:${Versions.MPAndroidChart}"

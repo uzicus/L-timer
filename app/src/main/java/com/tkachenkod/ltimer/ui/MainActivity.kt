@@ -4,10 +4,12 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.tkachenkod.ltimer.R
-import com.tkachenkod.ltimer.ui.base.BackClickHandler
+import com.tkachenkod.ltimer.ui.base.BackHandler
 import kotlinx.android.synthetic.main.activity_main.*
+import me.dmdev.rxpm.navigation.NavigationMessage
+import me.dmdev.rxpm.navigation.NavigationMessageHandler
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavigationMessageHandler {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,9 +23,18 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         val currentFragment = navHostFragment.childFragmentManager.primaryNavigationFragment
 
-        if (currentFragment is BackClickHandler
-            && currentFragment.onBackPressed()) {
+        if (currentFragment is BackHandler
+            && currentFragment.handleBack().not()) {
             super.onBackPressed()
         }
+    }
+
+    override fun handleNavigationMessage(message: NavigationMessage): Boolean {
+
+        when (message) {
+            is BackMessage -> super.onBackPressed()
+        }
+
+        return true
     }
 }

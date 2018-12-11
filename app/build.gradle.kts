@@ -79,8 +79,6 @@ dependencies {
     implementation(Libs.androidx_constraintlayout)
     implementation(Libs.androidx_navigation_fragment)
     implementation(Libs.androidx_navigation_ui)
-    implementation(Libs.androidx_lifecycle_extensions)
-    kapt(Libs.androidx_lifecycle_compiler)
 
     implementation(Libs.androidx_room_runtime)
     implementation(Libs.androidx_room_rxjava)
@@ -100,7 +98,7 @@ dependencies {
 
     implementation(Libs.threetenabp)
 
-    implementation(Libs.livedata_ktx)
+    implementation(Libs.rxpm)
 
     implementation(Libs.MPAndroidChart)
 
