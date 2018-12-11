@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
+import me.dmdev.rxpm.base.PmSupportFragment
 
-abstract class BaseFragment: Fragment() {
+abstract class BaseScreen<PM : BaseScreenPm> :
+    PmSupportFragment<PM>(),
+    BackHandler {
 
     abstract val screenLayout: Int
 
@@ -20,7 +20,10 @@ abstract class BaseFragment: Fragment() {
         return inflater.inflate(screenLayout, container, false)
     }
 
-    infix fun <T> LiveData<T>.observe(observer: (T) -> Unit) {
-        observe(this@BaseFragment, Observer(observer))
+    override fun handleBack(): Boolean {
+        presentationModel.backAction.consumer.accept(Unit)
+        return true
     }
+
+    override fun onBindPresentationModel(pm: PM) {}
 }
