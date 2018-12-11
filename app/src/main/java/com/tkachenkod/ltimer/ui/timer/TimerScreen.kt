@@ -8,56 +8,39 @@ import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionManager
 import com.google.android.material.snackbar.Snackbar
+import com.jakewharton.rxbinding3.view.clicks
+import com.jakewharton.rxbinding3.widget.editorActions
 import com.tkachenkod.ltimer.R
 import com.tkachenkod.ltimer.entity.Task
 import com.tkachenkod.ltimer.extension.*
-import com.tkachenkod.ltimer.ui.base.BackClickHandler
-import com.tkachenkod.ltimer.ui.base.BaseFragment
+import com.tkachenkod.ltimer.ui.base.BackHandler
+import com.tkachenkod.ltimer.ui.base.BaseScreen
 import com.tkachenkod.ltimer.ui.base.adapter.BaseListAdapter
 import com.tkachenkod.ltimer.ui.base.adapter.DiffItemsCallback
-import com.tkachenkod.ltimer.ui.timer.TimerViewModel.ScreenState
-import com.tkachenkod.ltimer.ui.timer.TimerViewModel.TaskNameState
+import com.tkachenkod.ltimer.ui.timer.TimerScreenPm.ScreenState
+import com.tkachenkod.ltimer.ui.timer.TimerScreenPm.TaskNameState
 import kotlinx.android.synthetic.main.fragment_timer.*
 import kotlinx.android.synthetic.main.item_last_task.*
-import org.koin.android.viewmodel.ext.android.viewModel
 
-class TimerFragment : BaseFragment(), BackClickHandler {
+class TimerScreen : BaseScreen<TimerScreenPm>(), BackHandler {
+
+    override fun providePresentationModel() = TimerScreenPm()
 
     override val screenLayout: Int = R.layout.fragment_timer
-
-    private val viewModel: TimerViewModel by viewModel()
 
     private val lastTasksAdapter = LastTasksAdapter()
     private val lastTasksDiffItemsCallback = LastTasksDiffItemsCallback()
     private val transitionHelper = TransitionHelper()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onBindPresentationModel(pm: TimerScreenPm) {
+        pm.taskName bindTo taskText::setText
+        pm.taskNameInputControl bindTo taskInput
 
-        rootLayout.setTransitionListener(transitionHelper)
-
-        with(lastTasksRecyclerView) {
-            layoutManager = LinearLayoutManager(context)
-            adapter = lastTasksAdapter
-        }
-
-        taskEdit.imeOptions = EditorInfo.IME_ACTION_DONE
-        taskEdit.setRawInputType(InputType.TYPE_CLASS_TEXT)
-
-        viewModel.taskName observe taskText::setText
-        viewModel.taskNameInput observe {
-            if (taskEdit.text.toString() != it) {
-                taskEdit.setText(it)
-                taskEdit.setSelection(it.length)
-            }
-        }
-
-        viewModel.timerSeconds observe { seconds ->
+        pm.timerSeconds bindTo { seconds ->
             timerText.text = String.format(
                 "%02d:%02d",
                 seconds % 3600 / 60,
@@ -65,7 +48,7 @@ class TimerFragment : BaseFragment(), BackClickHandler {
             )
         }
 
-        viewModel.taskNameState observe { taskNameState ->
+        pm.taskNameState bindTo  { taskNameState ->
             TransitionManager.beginDelayedTransition(taskNameLayout)
 
             taskInput.isInvisible = taskNameState != TaskNameState.ENTERING
@@ -78,7 +61,7 @@ class TimerFragment : BaseFragment(), BackClickHandler {
             }
         }
 
-        viewModel.screenState observe { screenState ->
+        pm.screenState bindTo { screenState ->
             when (screenState) {
                 ScreenState.DASHBOARD -> {
                     if (transitionHelper.pulseAnimation) {
@@ -103,19 +86,19 @@ class TimerFragment : BaseFragment(), BackClickHandler {
             }
         }
 
-        viewModel.lastTasks observe {
-            lastTasksTitleText.isVisible = it.isNotEmpty()
-            lastTasksRecyclerView.isVisible = it.isNotEmpty()
+        pm.lastTasks bindTo { lastTasks ->
+            lastTasksTitleText.isInvisible = lastTasks.isEmpty()
+            lastTasksRecyclerView.isInvisible = lastTasks.isEmpty()
 
-            lastTasksAdapter.updateItems(it, lastTasksDiffItemsCallback)
+            lastTasksAdapter.updateItems(lastTasks, lastTasksDiffItemsCallback)
         }
 
-        viewModel.shakeTaskName observe {
+        pm.shakeTaskName bindTo {
             val animation = AnimationUtils.loadAnimation(taskInput.context, R.anim.shake)
             taskInput.startAnimation(animation)
         }
 
-        viewModel.showTaskSavedMsg observe { savedTask ->
+        pm.showTaskSavedMsg bindTo { savedTask ->
             val title = resources.getString(R.string.timer_task_saved_msg_title)
                 .spannable()
                 .applyColor(resources.color(R.color.white_translucent_50))
@@ -129,27 +112,34 @@ class TimerFragment : BaseFragment(), BackClickHandler {
 
             Snackbar.make(rootLayout, msg, Snackbar.LENGTH_LONG)
                 .setAction(R.string.timer_don_t_save_title) {
-                    viewModel.cancelSave(savedTask)
+                    savedTask passTo pm.cancelSave
                 }
                 .onDismissed {
-                    viewModel.taskSavedMsgDismissed(savedTask)
+                    savedTask passTo pm.taskSavedMsgDismissed
                 }
                 .show()
         }
 
-        button.setOnClickListener { viewModel.buttonClicks() }
-        taskNameLayout.setOnClickListener { viewModel.taskNameClicks() }
-        taskEdit.textChangedListener { viewModel.taskNameInputChange(it) }
-        taskEdit.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                viewModel.taskNameActionDone()
-            }
-            true
-        }
+        button.clicks() bindTo pm.buttonClicks
+        taskNameLayout.clicks() bindTo pm.taskNameClicks
+        taskEdit.editorActions()
+            .filter { it == EditorInfo.IME_ACTION_DONE }
+            .map { Unit }
+            .bindTo(pm.taskNameActionDone)
     }
 
-    override fun onBackPressed(): Boolean {
-        return viewModel.onBackPressed()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        rootLayout.setTransitionListener(transitionHelper)
+
+        with(lastTasksRecyclerView) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = lastTasksAdapter
+        }
+
+        taskEdit.imeOptions = EditorInfo.IME_ACTION_DONE
+        taskEdit.setRawInputType(InputType.TYPE_CLASS_TEXT)
     }
 
     inner class TransitionHelper : MotionLayout.TransitionListener {
@@ -200,7 +190,7 @@ class TimerFragment : BaseFragment(), BackClickHandler {
         inner class LastTaskViewHolder(itemView: View) : BaseViewHolder<Task>(itemView) {
 
             init {
-                itemView.setOnClickListener { viewModel.lastTasksItemClicks(item) }
+                itemView.setOnClickListener { item passTo presentationModel.lastTasksItemClicks }
             }
 
             override fun bind(item: Task) {

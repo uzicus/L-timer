@@ -4,7 +4,6 @@ import android.app.Application
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.tkachenkod.ltimer.database.DatabaseModule
 import com.tkachenkod.ltimer.model.ModelModule
-import com.tkachenkod.ltimer.ui.UIModule
 import org.koin.android.ext.android.startKoin
 import timber.log.Timber
 
@@ -17,8 +16,7 @@ class App : Application() {
 
         startKoin(applicationContext, listOf(
             DatabaseModule,
-            ModelModule,
-            UIModule
+            ModelModule
         ))
 
         if (BuildConfig.DEBUG) {
