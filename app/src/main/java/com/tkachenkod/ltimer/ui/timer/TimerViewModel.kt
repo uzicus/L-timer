@@ -93,6 +93,7 @@ class TimerViewModel(
     }
 
     fun buttonClicks() {
+        val taskNameOrEmpty = _taskNameInput.value.orEmpty()
         when (_screenState.value) {
             ScreenState.DASHBOARD -> {
                 _taskNameInput.postValue("")
@@ -100,18 +101,18 @@ class TimerViewModel(
                 _screenState.postValue(ScreenState.ENTERING_TASK)
             }
             ScreenState.ENTERING_TASK -> {
-                if (_taskNameInput.value.orEmpty().isNotBlank()) {
+                if (taskNameOrEmpty.isNotBlank()) {
+                    startTimer(taskNameOrEmpty.trim())
                     _screenState.postValue(ScreenState.RECORDING)
                     _taskNameState.postValue(TaskNameState.SHOWING)
-                    startTimer(_taskNameInput.value.orEmpty().trim())
                 } else {
                     _shakeTaskName.postValue(Unit)
                 }
             }
             ScreenState.RECORDING -> {
+                stopTimer()
                 _screenState.postValue(ScreenState.DASHBOARD)
                 _taskNameState.postValue(TaskNameState.NOTHING)
-                stopTimer()
             }
         }
     }
@@ -147,7 +148,12 @@ class TimerViewModel(
     }
 
     fun lastTasksItemClicks(task: Task) {
-
+        if (_screenState != ScreenState.RECORDING) {
+            startTimer(task.name)
+            _taskNameInput.postValue(task.name)
+            _screenState.postValue(ScreenState.RECORDING)
+            _taskNameState.postValue(TaskNameState.SHOWING)
+        }
     }
 
     fun cancelSave(task: Task) {
