@@ -37,7 +37,6 @@ class TimerFragment : BaseFragment(), BackClickHandler {
     private val transitionHelper = TransitionHelper()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         rootLayout.setTransitionListener(transitionHelper)
 

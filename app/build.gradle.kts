@@ -102,6 +102,8 @@ dependencies {
 
     implementation(Libs.livedata_ktx)
 
+    implementation(Libs.MPAndroidChart)
+
     testImplementation(Config.Libs.junit)
     androidTestImplementation(Config.Libs.room_test)
     androidTestImplementation(Config.Libs.androidx_arch_core_test)

@@ -29,6 +29,8 @@ object Config {
 
         val livedata_ktx = "2.0.1"
 
+        val MPAndroidChart = "v3.1.0-alpha"
+
         val junit = "4.12"
         val junit_runner = "1.0.2"
         val espresso_core = "3.0.2"
@@ -84,6 +86,9 @@ object Config {
         val threetenabp = "com.jakewharton.threetenabp:threetenabp:${Versions.threetenabp}"
 
         val livedata_ktx = "com.shopify:livedata-ktx:${Versions.livedata_ktx}"
+
+        // Chart
+        val MPAndroidChart = "com.github.PhilJay:MPAndroidChart:${Versions.MPAndroidChart}"
 
         // Test
         val koin_test = "org.koin:koin-test:${Versions.koin}"
