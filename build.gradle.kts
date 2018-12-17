@@ -24,3 +24,9 @@ allprojects {
 task("clean") {
     delete(rootProject.buildDir)
 }
+
+task("getVersion") {
+    doLast {
+        println(Config.Android.versionName)
+    }
+}
