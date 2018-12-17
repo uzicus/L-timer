@@ -10,9 +10,12 @@
     tools:showIn="@layout/fragment_timer">
 
     <View
+        android:id="@+id/lastTaskColorView"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:background="@drawable/bg_circle"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -26,6 +29,8 @@
         android:layout_marginEnd="16dp"
         android:drawableStart="@drawable/bg_circle"
         android:textSize="14sp"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
         tools:text="@sample/task_names"
         tools:textColor="@sample/material_colors"/>
 

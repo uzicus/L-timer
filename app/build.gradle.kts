@@ -100,6 +100,7 @@ dependencies {
 
     implementation(Libs.rxpm)
 
+    implementation(Libs.randomColor)
     implementation(Libs.MPAndroidChart)
 
     testImplementation(Config.Libs.junit)

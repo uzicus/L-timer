@@ -10,6 +10,7 @@
     tools:showIn="@layout/fragment_statistics">
 
     <View
+        android:id="@+id/statisticsTaskColorView"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:background="@drawable/bg_circle"
@@ -20,13 +21,34 @@
 
     <TextView
         android:id="@+id/statisticsTaskNameText"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_weight="1"
         android:drawableStart="@drawable/bg_circle"
         android:textSize="14sp"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
         tools:text="@sample/task_names"
         tools:textColor="@sample/material_colors"/>
+
+    <TextView
+        android:id="@+id/statisticsTaskDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
+        tools:text="58m"/>
+
+    <TextView
+        android:id="@+id/statisticsTaskPercent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
+        tools:text="70%"/>
 
 </LinearLayout>

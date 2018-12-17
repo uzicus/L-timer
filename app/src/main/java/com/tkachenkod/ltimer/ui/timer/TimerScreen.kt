@@ -195,6 +195,11 @@ class TimerScreen : BaseScreen<TimerScreenPm>(), BackHandler {
 
             override fun bind(item: Task) {
                 lastTaskNameText.text = item.name
+
+                if (item.color != null) {
+                    lastTaskColorView.background.mutate().setTint(item.color)
+                    lastTaskNameText.setTextColor(item.color)
+                }
             }
 
         }
@@ -207,7 +212,7 @@ class TimerScreen : BaseScreen<TimerScreenPm>(), BackHandler {
         }
 
         override fun areContentsTheSame(oldItem: Task, newItem: Task): Boolean {
-            return oldItem.name == newItem.name
+            return oldItem.name == newItem.name && oldItem.color == newItem.color
         }
 
     }

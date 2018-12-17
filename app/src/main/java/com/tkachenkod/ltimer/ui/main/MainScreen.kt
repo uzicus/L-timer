@@ -11,7 +11,7 @@ import com.tkachenkod.ltimer.ui.about.AboutScreen
 import com.tkachenkod.ltimer.ui.base.BackHandler
 import com.tkachenkod.ltimer.ui.base.BaseScreenPm
 import com.tkachenkod.ltimer.ui.base.BaseScreen
-import com.tkachenkod.ltimer.ui.statistics.StatisticsFragment
+import com.tkachenkod.ltimer.ui.statistics.StatisticsScreen
 import com.tkachenkod.ltimer.ui.timer.TimerScreen
 import kotlinx.android.synthetic.main.fragment_main.*
 
@@ -37,7 +37,7 @@ class MainScreen : BaseScreen<BaseScreenPm>(), BackHandler {
             override fun getItem(position: Int): Fragment {
                 return when(Page.values()[position]) {
                     Page.TIMER -> TimerScreen()
-                    Page.STATISTICS -> StatisticsFragment()
+                    Page.STATISTICS -> StatisticsScreen()
                     Page.ABOUT -> AboutScreen()
                 }
             }

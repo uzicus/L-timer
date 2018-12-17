@@ -29,6 +29,7 @@ object Config {
 
         val rxpm = "1.2.3"
 
+        val randomColor = "1.0.0"
         val MPAndroidChart = "v3.1.0-alpha"
 
         val junit = "4.12"
@@ -85,6 +86,7 @@ object Config {
 
         val rxpm = "me.dmdev.rxpm:rxpm:${Versions.rxpm}"
 
+        val randomColor = "com.github.lzyzsd.randomcolor:library:${Versions.randomColor}"
         // Chart
         val MPAndroidChart = "com.github.PhilJay:MPAndroidChart:${Versions.MPAndroidChart}"
 
