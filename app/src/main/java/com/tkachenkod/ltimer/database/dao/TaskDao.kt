@@ -3,6 +3,7 @@ package com.tkachenkod.ltimer.database.dao
 import androidx.room.*
 import com.tkachenkod.ltimer.entity.Task
 import com.tkachenkod.ltimer.entity.TaskWithTimeRecords
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.Single
@@ -20,10 +21,13 @@ interface TaskDao {
     fun findByName(taskName: String): Maybe<Task>
 
     @Transaction
-    @Query("SELECT id, name from tasks")
+    @Query("SELECT id, name, color from tasks")
     fun taskWithTimeRecords(): Flowable<List<TaskWithTimeRecords>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(task: Task): Single<Long>
+
+    @Query("UPDATE tasks SET color = :color WHERE id = :taskId")
+    fun updateColorTask(taskId: Long, color: Int?)
 
 }
