@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
@@ -7,10 +7,16 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="android:statusBarColor">@color/black_translucent_15</item>
+        <item name="android:statusBarColor">@color/black_translucent_10</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+        <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">@color/black_translucent_15</item>
+        <item name="android:navigationBarColor">@android:color/white</item>
+        <item name="android:windowBackground">@android:color/white</item>
         <item name="android:colorControlNormal">@color/colorControlNormal</item>
         <item name="android:colorControlActivated">@color/colorControlActivated</item>
         <item name="android:textColorHint">?android:colorControlNormal</item>
+        <item name="android:fontStyle" tools:targetApi="o">@font/montserrat_bold</item>
         
         <item name="android:textViewStyle">@style/AppTextViewStyle</item>
         <item name="android:buttonStyle">@style/AppButtonStyle</item>
@@ -19,6 +25,7 @@
     
     <style name="AppTextViewStyle" parent="android:Widget.TextView">
         <item name="android:fontFamily">@font/montserrat_bold</item>
+
     </style>
 
     <style name="AppButtonStyle" parent="android:Widget.Button">

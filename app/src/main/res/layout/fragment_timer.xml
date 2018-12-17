@@ -121,7 +121,6 @@
         android:textColor="@android:color/white"
         android:textSize="28sp"
         android:visibility="invisible"
-        tools:targetApi="o"
         tools:text="06:55"/>
 
     <TextView
