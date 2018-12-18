@@ -5,12 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
-import com.github.mikephil.charting.data.PieEntry
 import com.jakewharton.rxbinding3.view.clicks
 import com.tkachenkod.ltimer.R
 import com.tkachenkod.ltimer.extension.inflate
+import com.tkachenkod.ltimer.extension.updateData
 import com.tkachenkod.ltimer.ui.base.BaseScreen
 import com.tkachenkod.ltimer.ui.base.adapter.BaseListAdapter
 import com.tkachenkod.ltimer.ui.base.adapter.DiffItemsCallback
@@ -32,15 +31,13 @@ class StatisticsScreen : BaseScreen<StatisticsScreenPm>() {
 
         with(pieChart) {
             setDrawEntryLabels(false)
-            setDrawSlicesUnderHole(false)
             setTouchEnabled(false)
             setDrawEntryLabels(false)
             setDrawCenterText(false)
             setDrawMarkers(false)
             legend.isEnabled = false
             description = null
-            holeRadius = 2f
-            transparentCircleRadius = 0f
+            isDrawHoleEnabled = false
         }
 
         with(statisticsRecyclerView) {
@@ -57,20 +54,17 @@ class StatisticsScreen : BaseScreen<StatisticsScreenPm>() {
 
             tasksAdapter.updateItems(tasks, tasksDiffItemsCallback)
 
-            val pieEntities = tasks.map {
-                PieEntry(it.durationInSecond.toFloat())
-            }
+            with (pieChart) {
+                updateData(
+                    newValues = tasks.map { it.durationInSecond.toFloat() },
+                    newColors = tasks.map { it.color }
+                )
 
-            val pieDataSet = PieDataSet(pieEntities, "").apply {
-                colors = tasks.map(StatisticsTask::color)
-                sliceSpace = 4f
-            }
+                data.dataSet.setDrawValues(false)
+                (data.dataSet as PieDataSet).sliceSpace = 3f
 
-            pieChart.data = PieData(pieDataSet).apply {
-                setDrawValues(false)
+                invalidate()
             }
-
-            pieChart.invalidate()
         }
 
         pm.period bindTo { period ->

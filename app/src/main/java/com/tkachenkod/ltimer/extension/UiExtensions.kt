@@ -1,7 +1,9 @@
 package com.tkachenkod.ltimer.extension
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Color
 import android.text.*
 import android.text.style.ForegroundColorSpan
 import android.view.*
@@ -10,6 +12,11 @@ import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.LayoutRes
 import androidx.core.content.res.ResourcesCompat
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.DataSet
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
@@ -115,4 +122,61 @@ fun String.spannable() = SpannableString(this)
 
 fun SpannableString.applyColor(color: Int) = apply {
     setSpan(ForegroundColorSpan(color), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+}
+
+fun PieChart.updateData(newValues: List<Float>, newColors: List<Int?>) {
+    if (data == null) {
+        data = PieData(PieDataSet(newValues.map { PieEntry(it) }, ""))
+        (data.dataSet as PieDataSet).colors = newColors
+    } else {
+        val oldValues = (data.dataSet as DataSet<*>).values.map { (it as PieEntry).value }
+        val oldColors = data.dataSet.colors
+
+        ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 300
+            addUpdateListener {
+                val increment = it.animatedValue as Float
+
+                data.dataSet.clear()
+
+                newValues
+                    .mapIndexed { index, newValue ->
+                        val oldValue = oldValues.getOrElse(index) { newValue }
+                        val updatedValue = oldValue + (newValue - oldValue) * increment
+                        PieEntry(updatedValue)
+                    }
+                    .forEach { newEntry ->
+                        data.dataSet.addEntry(newEntry)
+                    }
+
+                newColors
+                    .requireNoNulls()
+                    .mapIndexed { index, newColor ->
+                        val oldColor = oldColors.getOrElse(index) { newColor }
+
+                        val oldColorHsv = FloatArray(3)
+                        val newColorHsv = FloatArray(3)
+                        val updatedColorHsv = FloatArray(3)
+
+                        Color.colorToHSV(oldColor, oldColorHsv)
+                        Color.colorToHSV(newColor, newColorHsv)
+
+                        (0 until updatedColorHsv.size).forEach { hsvIndex ->
+                            updatedColorHsv[hsvIndex] = oldColorHsv[hsvIndex] +
+                                    (newColorHsv[hsvIndex] - oldColorHsv[hsvIndex]) * increment
+                        }
+
+                        Color.HSVToColor(updatedColorHsv)
+                    }
+                    .also { updatedColors ->
+                        (data.dataSet as PieDataSet).colors = updatedColors
+                    }
+
+                notifyDataSetChanged()
+                refreshDrawableState()
+                invalidate()
+            }
+            start()
+        }
+    }
 }

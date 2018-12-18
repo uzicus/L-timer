@@ -3,7 +3,7 @@ object Config {
 
     object Versions {
         val kotlin_version = "1.3.11"
-        val android_plugin_version = "3.4.0-alpha07"
+        val android_plugin_version = "3.4.0-alpha08"
 
         val support_lib = "28.0.0"
         val androidx_appcompat = "1.0.2"
@@ -30,7 +30,7 @@ object Config {
         val rxpm = "1.2.3"
 
         val randomColor = "1.0.0"
-        val MPAndroidChart = "v3.1.0-alpha"
+        val MPAndroidChart = "master-SNAPSHOT"
 
         val junit = "4.12"
         val junit_runner = "1.0.2"
