@@ -27,6 +27,14 @@ class StatisticsScreen : BaseScreen<StatisticsScreenPm>() {
     private val tasksAdapter = TasksAdapter()
     private val tasksDiffItemsCallback = TasksDiffItemsCallback()
 
+    private val animationDuration: Long by lazy {
+        resources.getInteger(R.integer.statistics_chart_changes_animation_duration).toLong()
+    }
+
+    private val pieChartSliceSpace: Float by lazy {
+        resources.getInteger(R.integer.statistics_chart_slice_space).toFloat()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         with(pieChart) {
@@ -48,20 +56,23 @@ class StatisticsScreen : BaseScreen<StatisticsScreenPm>() {
 
     override fun onBindPresentationModel(pm: StatisticsScreenPm) {
 
-        pm.periodTasks bindTo { tasks ->
+        pm.listTasks bindTo { tasks ->
             emptyLayout.isInvisible = tasks.isNotEmpty()
             contentLayout.isInvisible = tasks.isEmpty()
 
             tasksAdapter.updateItems(tasks, tasksDiffItemsCallback)
+        }
 
+        pm.chartTasks bindTo { tasks ->
             with (pieChart) {
                 updateData(
                     newValues = tasks.map { it.durationInSecond.toFloat() },
-                    newColors = tasks.map { it.color }
+                    animationDuration = animationDuration
                 )
 
                 data.dataSet.setDrawValues(false)
-                (data.dataSet as PieDataSet).sliceSpace = 3f
+                (data.dataSet as PieDataSet).sliceSpace = pieChartSliceSpace
+                (data.dataSet as PieDataSet).colors = tasks.map { it.color }
 
                 invalidate()
             }
