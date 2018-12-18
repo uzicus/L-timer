@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="statistics_chart_changes_animation_duration">400</integer>
+    <integer name="statistics_chart_slice_space">3</integer>
+
+</resources>
