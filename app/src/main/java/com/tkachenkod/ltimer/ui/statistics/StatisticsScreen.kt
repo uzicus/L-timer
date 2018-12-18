@@ -3,6 +3,7 @@ package com.tkachenkod.ltimer.ui.statistics
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -51,6 +52,9 @@ class StatisticsScreen : BaseScreen<StatisticsScreenPm>() {
     override fun onBindPresentationModel(pm: StatisticsScreenPm) {
 
         pm.periodTasks bindTo { tasks ->
+            emptyLayout.isInvisible = tasks.isNotEmpty()
+            contentLayout.isInvisible = tasks.isEmpty()
+
             tasksAdapter.updateItems(tasks, tasksDiffItemsCallback)
 
             val pieEntities = tasks.map {

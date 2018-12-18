@@ -15,6 +15,8 @@ data class TaskWithTimeRecords(
 ) {
 
     val timeRecordsDuration: Long
-        get() = timeRecords.sumByLong(TimeRecord::duration)
+        get() = timeRecords.sumByLong {
+            it.endTime?.toEpochSecond()?.minus(it.startTime.toEpochSecond()) ?: 0
+        }
 
 }
