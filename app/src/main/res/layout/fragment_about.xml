@@ -1,6 +1,423 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</LinearLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        tools:scrollY="2500dp">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/startGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="16dp"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/headerGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="60dp"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/subHeaderGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="116dp"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/endGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="16dp"/>
+
+        <TextView
+            android:id="@+id/aboutTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_extra_bold"
+            android:text="@string/about_title"
+            android:textColor="?colorPrimary"
+            android:textSize="64sp"
+            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            app:layout_constraintStart_toStartOf="@+id/startGuideline"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:fontFamily="@font/montserrat_extra_bold"
+            android:text="@string/common_em_dash"
+            android:textColor="?colorPrimary"
+            android:textSize="28sp"
+            app:layout_constraintStart_toStartOf="@+id/startGuideline"
+            app:layout_constraintTop_toTopOf="@+id/aboutHeader1"/>
+
+        <TextView
+            android:id="@+id/aboutHeader1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/montserrat_extra_bold"
+            android:text="@string/about_header1"
+            android:textColor="?colorPrimary"
+            android:textSize="28sp"
+            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            app:layout_constraintStart_toStartOf="@+id/headerGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/aboutTitle"/>
+
+        <TextView
+            android:id="@+id/aboutBody1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:text="@string/about_body1"
+            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            app:layout_constraintStart_toStartOf="@+id/startGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/aboutHeader1"/>
+
+        <ImageView
+            android:id="@+id/aboutLyubishchevImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="56dp"
+            android:contentDescription="@string/about_image_photo_lyubishchev_description"
+            android:src="@drawable/im_lyubishchev"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/aboutBody1"/>
+
+        <TextView
+            android:id="@+id/aboutLyubishchevTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_extra_bold"
+            android:text="@string/about_lyubishchev_title"
+            android:textColor="?colorPrimary"
+            android:textSize="28sp"
+            app:layout_constraintBottom_toBottomOf="@+id/aboutLyubishchevImage"
+            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            app:layout_constraintStart_toStartOf="@+id/startGuideline"
+            app:layout_constraintTop_toTopOf="@+id/aboutLyubishchevImage"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/montserrat_extra_bold"
+            android:text="@string/about_lyubishchev_link"
+            android:textColor="?colorPrimary"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            app:layout_constraintStart_toStartOf="@+id/startGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/aboutLyubishchevTitle"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:fontFamily="@font/montserrat_extra_bold"
+            android:text="@string/common_em_dash"
+            android:textColor="?colorPrimary"
+            android:textSize="28sp"
+            app:layout_constraintStart_toStartOf="@+id/startGuideline"
+            app:layout_constraintTop_toTopOf="@+id/aboutHeader2"/>
+
+        <TextView
+            android:id="@+id/aboutHeader2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="56dp"
+            android:fontFamily="@font/montserrat_extra_bold"
+            android:text="@string/about_header2"
+            android:textColor="?colorPrimary"
+            android:textSize="28sp"
+            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            app:layout_constraintStart_toStartOf="@+id/headerGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/aboutLyubishchevImage"/>
+
+        <TextView
+            android:id="@+id/aboutBody2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:text="@string/about_body2"
+            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            app:layout_constraintStart_toStartOf="@+id/startGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/aboutHeader2"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:fontFamily="@font/montserrat_extra_bold"
+            android:text="@string/common_em_dash"
+            android:textColor="?colorPrimary"
+            android:textSize="28sp"
+            app:layout_constraintStart_toStartOf="@+id/startGuideline"
+            app:layout_constraintTop_toTopOf="@+id/aboutHeader3_1"/>
+
+        <TextView
+            android:id="@+id/aboutHeader3_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="56dp"
+            android:fontFamily="@font/montserrat_extra_bold"
+            android:text="@string/about_header3_1"
+            android:textColor="?colorPrimary"
+            android:textSize="28sp"
+            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            app:layout_constraintStart_toStartOf="@+id/headerGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/aboutBody2"/>
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_circle"
+            app:layout_constraintStart_toStartOf="@+id/startGuideline"
+            app:layout_constraintTop_toTopOf="@+id/aboutList3_1"/>
+
+        <TextView
+            android:id="@+id/aboutList3_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:text="@string/about_list3_1"
+            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            app:layout_constraintStart_toStartOf="@+id/headerGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/aboutHeader3_1"/>
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_circle"
+            app:layout_constraintStart_toStartOf="@+id/startGuideline"
+            app:layout_constraintTop_toTopOf="@+id/aboutList3_2"/>
+
+        <TextView
+            android:id="@+id/aboutList3_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:text="@string/about_list3_2"
+            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            app:layout_constraintStart_toStartOf="@+id/headerGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/aboutList3_1"/>
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_circle"
+            app:layout_constraintStart_toStartOf="@+id/startGuideline"
+            app:layout_constraintTop_toTopOf="@+id/aboutList3_3"/>
+
+        <TextView
+            android:id="@+id/aboutList3_3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:text="@string/about_list3_3"
+            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            app:layout_constraintStart_toStartOf="@+id/headerGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/aboutList3_2"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_marginBottom="16dp"
+            android:background="?colorPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/aboutHeader3_2"
+            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            app:layout_constraintStart_toStartOf="@+id/startGuideline"/>
+
+        <TextView
+            android:id="@+id/aboutHeader3_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:fontFamily="@font/montserrat_extra_bold"
+            android:text="@string/about_header3_2"
+            android:textColor="?colorPrimary"
+            android:textSize="28sp"
+            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            app:layout_constraintStart_toStartOf="@+id/startGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/aboutList3_3"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="16dp"
+            android:background="?colorPrimary"
+            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            app:layout_constraintStart_toStartOf="@+id/startGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/aboutHeader3_2"/>
+
+        <TextView
+            android:id="@+id/aboutBody3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:text="@string/about_body3"
+            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            app:layout_constraintStart_toStartOf="@+id/startGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/aboutHeader3_2"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:fontFamily="@font/montserrat_extra_bold"
+            android:text="@string/common_em_dash"
+            android:textColor="?colorPrimary"
+            android:textSize="28sp"
+            app:layout_constraintStart_toStartOf="@+id/startGuideline"
+            app:layout_constraintTop_toTopOf="@+id/aboutHeader4"/>
+
+        <TextView
+            android:id="@+id/aboutHeader4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="56dp"
+            android:fontFamily="@font/montserrat_extra_bold"
+            android:text="@string/about_header4"
+            android:textColor="?colorPrimary"
+            android:textSize="28sp"
+            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            app:layout_constraintStart_toStartOf="@+id/headerGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/aboutBody3"/>
+
+        <TextView
+            android:id="@+id/aboutBody4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:text="@string/about_body4"
+            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            app:layout_constraintStart_toStartOf="@+id/startGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/aboutHeader4"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:fontFamily="@font/montserrat_extra_bold"
+            android:text="@string/common_em_dash"
+            android:textColor="?colorPrimary"
+            android:textSize="28sp"
+            app:layout_constraintStart_toStartOf="@+id/startGuideline"
+            app:layout_constraintTop_toTopOf="@+id/aboutHeader5"/>
+
+        <TextView
+            android:id="@+id/aboutHeader5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="56dp"
+            android:fontFamily="@font/montserrat_extra_bold"
+            android:text="@string/about_header5"
+            android:textColor="?colorPrimary"
+            android:textSize="28sp"
+            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            app:layout_constraintStart_toStartOf="@+id/headerGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/aboutBody4"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/im_books"
+            android:contentDescription="@string/about_image_books_description"
+            app:layout_constraintStart_toStartOf="@+id/startGuideline"
+            app:layout_constraintTop_toTopOf="@+id/aboutSubHeader5_1"/>
+
+        <TextView
+            android:id="@+id/aboutSubHeader5_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="@string/about_sub_header5_1"
+            android:textColor="?colorPrimary"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            app:layout_constraintStart_toStartOf="@+id/subHeaderGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/aboutHeader5"/>
+
+        <TextView
+            android:id="@+id/aboutBody5_1_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/about_body5_1_1"
+            android:fontFamily="@font/montserrat_semi_bold"
+            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            app:layout_constraintStart_toStartOf="@+id/subHeaderGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/aboutSubHeader5_1"/>
+
+        <TextView
+            android:id="@+id/aboutBody5_1_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/about_body5_1_1"
+            android:fontFamily="@font/montserrat_semi_bold"
+            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            app:layout_constraintStart_toStartOf="@+id/startGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/aboutBody5_1_1"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/im_piano"
+            android:contentDescription="@string/about_image_piano_description"
+            app:layout_constraintStart_toStartOf="@+id/startGuideline"
+            app:layout_constraintTop_toTopOf="@+id/aboutSubHeader5_2"/>
+
+        <TextView
+            android:id="@+id/aboutSubHeader5_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="@string/about_sub_header5_2"
+            android:textColor="?colorPrimary"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            app:layout_constraintStart_toStartOf="@+id/subHeaderGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/aboutBody5_1_2"/>
+
+        <TextView
+            android:id="@+id/aboutBody5_2_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/about_body5_2_1"
+            android:fontFamily="@font/montserrat_semi_bold"
+            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            app:layout_constraintStart_toStartOf="@+id/subHeaderGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/aboutSubHeader5_2"/>
+
+        <TextView
+            android:id="@+id/aboutBody5_2_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/about_body5_2_1"
+            android:fontFamily="@font/montserrat_semi_bold"
+            app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+            app:layout_constraintStart_toStartOf="@+id/startGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/aboutBody5_2_1"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

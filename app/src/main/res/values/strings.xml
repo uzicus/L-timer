@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">L-timer</string>
 
+    <string name="common_em_dash">—</string>
+
     <string name="main_navigation_timer_title">timer</string>
     <string name="main_navigation_statistics_title">stats</string>
     <string name="main_navigation_about_title">about</string>
@@ -20,5 +22,31 @@
     <string name="statistics_year_label">year</string>
     <string name="statistics_empty_title">no\ndata</string>
     <string name="statistics_empty_description">your statistics will be shown here</string>
+
+    <string name="about_title">about</string>
+    <string name="about_header1">what we actually know about time</string>
+    <string name="about_body1">Many of us can immediately answer about their last year salary correctly to the one dollar. But who can tell how many hours they have spent on creative work, art or favorite hobbies for the last year?</string>
+    <string name="about_image_photo_lyubishchev_description">In the photo Lyubishchev for a typewriter.</string>
+    <string name="about_lyubishchev_title">alexander lyubishchev — soviet scientist</string>
+    <string name="about_lyubishchev_link">wikipedia article</string>
+    <string name="about_header2">lyubischev’s time management system</string>
+    <string name="about_body2">You have to track everything you do during the whole day: working time, reading books, way to the office, having your dinner, talking to your friends and so on.</string>
+    <string name="about_header3_1">such approach can bring a lot of helpful stuff</string>
+    <string name="about_list3_1">You can see all time losses and clarify their reasons,</string>
+    <string name="about_list3_2">It helps to improve the efficiency of working time,</string>
+    <string name="about_list3_3">Helps to create a habit of estimating any job perfectly</string>
+    <string name="about_header3_2">lyubischev’s method can help planning any future work for the years to come</string>
+    <string name="about_body3">Lyubischev had work plans for the next five years, one year or next month. He planned his whole life (because he wanted to create a periodic system of biological objects). This way of time tracking can help to compare the efficiency of different approaches to getting the same tasks done and find the most productive way. With Lyubischev’s method time losses are decreasing from month to month. Estimate planning becomes more accurate, work time becomes more productive. The last 20 years of his life Alexander Lyubishev worked more productive than in young years.\n\nIf a person has a clear goal and a habit to appreciate every minute of life, he leaves all fussiness in his career, creative work, and in a whole life. From now on he can truly appreciate the other people’s job, can see any kind of a great job, can think independently. A lot of saved time allows you to gets learning in philosophy, history, literature, math and many more. The right time management system, therefore,  is some kind of mind amplifier.</string>
+    <string name="about_header4">l-timer</string>
+    <string name="about_body4">L-timer was developed exactly for Lyubischev’s time management method and named in his memory.\n\nThe main thing is split all spent time for two main categories: productive and losses. All task you were tracking falls into one of this categories. You can separate your task any way you want, that’s why L-timer no needs any tags or additional categories. The lack of tags gives user-friendly UI and flexibility to use the app. For example, you can group your breakfast, lunch, coffee breaks in one category “eating”. And you can track an eating item for any common action. Another way you can track separately any small tasks and then explore detailed statistic in minutes and percents.</string>
+    <string name="about_header5">some examples</string>
+    <string name="about_sub_header5_1">minimizing time losses</string>
+    <string name="about_image_books_description">Books on image</string>
+    <string name="about_body5_1_1">You feel that wasting your time, but can’t figure out causes. Track all your activities for 1–2 weeks. In stat, you can see where are spending your time. Let’s say you see that spend 3 hours a day in the traffic jams from home to job for every day.</string>
+    <string name="about_body5_1_2">That simple way you can figure out any time lose and fix it — find another job nearby, change the way of transit to job faster or spend this time more productive (reading books, or hear a classical music).</string>
+    <string name="about_sub_header5_2">finding a time for important things</string>
+    <string name="about_image_piano_description">Piano on image</string>
+    <string name="about_body5_2_1">Perhaps you a learn to play the piano and know to become desire level have to practice at least 5 hours per week. Then you track practice time with L-timer and find out that real practice is only 2 hour per week. </string>
+    <string name="about_body5_2_2">After that, you have accurate time data and an understanding that you can’t get the goal with 2 hours. So you have to arrange your time another way to spent 5 hours of practice.</string>
 
 </resources>
