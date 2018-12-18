@@ -18,5 +18,7 @@
     <string name="statistics_week_label">week</string>
     <string name="statistics_month_label">month</string>
     <string name="statistics_year_label">year</string>
+    <string name="statistics_empty_title">no\ndata</string>
+    <string name="statistics_empty_description">your statistics will be shown here</string>
 
 </resources>
