@@ -7,7 +7,7 @@ import com.tkachenkod.ltimer.model.TimerModel
 import com.tkachenkod.ltimer.ui.base.BaseScreenPm
 import io.reactivex.rxkotlin.Observables.combineLatest
 
-class StatisticsScreenPm: BaseScreenPm() {
+class StatisticsScreenPm : BaseScreenPm() {
 
     private val timerModel: TimerModel by inject()
 
@@ -35,31 +35,36 @@ class StatisticsScreenPm: BaseScreenPm() {
             period.observable
         )
             .map { (tasks, period) ->
-                val filteredTasks = tasks.map {
-                    val lastTime = it.timeRecords
-                        .map(TimeRecord::startTime)
-                        .sorted()
-                        .lastOrNull()
+                val filteredTasks = tasks
+                    .filter { taskWithTimeRecords ->
+                        taskWithTimeRecords.timeRecordsDuration != 0L
+                    }
+                    .map {
+                        val lastTime = it.timeRecords
+                            .map(TimeRecord::startTime)
+                            .sorted()
+                            .lastOrNull()
 
-                    val filteredTimeRecords = it.timeRecords.filter { timeRecord ->
-                        when (period) {
-                            Period.DAY -> {
-                                lastTime?.minusDays(1)?.isBefore(timeRecord.startTime) ?: false
-                            }
-                            Period.WEEK -> {
-                                lastTime?.minusWeeks(1)?.isBefore(timeRecord.startTime) ?: false
-                            }
-                            Period.MONTH -> {
-                                lastTime?.minusMonths(1)?.isBefore(timeRecord.startTime) ?: false
-                            }
-                            else -> {
-                                lastTime?.minusYears(1)?.isBefore(timeRecord.startTime) ?: false
+                        val filteredTimeRecords = it.timeRecords.filter { timeRecord ->
+                            when (period) {
+                                Period.DAY -> {
+                                    lastTime?.minusDays(1)?.isBefore(timeRecord.startTime) ?: false
+                                }
+                                Period.WEEK -> {
+                                    lastTime?.minusWeeks(1)?.isBefore(timeRecord.startTime) ?: false
+                                }
+                                Period.MONTH -> {
+                                    lastTime?.minusMonths(1)?.isBefore(timeRecord.startTime)
+                                        ?: false
+                                }
+                                else -> {
+                                    lastTime?.minusYears(1)?.isBefore(timeRecord.startTime) ?: false
+                                }
                             }
                         }
-                    }
 
-                    it.copy(timeRecords = filteredTimeRecords)
-                }
+                        it.copy(timeRecords = filteredTimeRecords)
+                    }
 
                 val sumDuration = filteredTasks.sumByLong {
                     it.timeRecords.sumByLong(TimeRecord::duration)
