@@ -4,6 +4,11 @@ language: android
 
 jdk: oraclejdk8
 
+branches:
+  only:
+    - master
+    - develop
+
 env:
   global:
     - ANROID_API_LEVEL = "28"
