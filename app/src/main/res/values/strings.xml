@@ -28,7 +28,7 @@
     <string name="about_body1">Many of us can immediately answer about their last year salary correctly to the one dollar. But who can tell how many hours they have spent on creative work, art or favorite hobbies for the last year?</string>
     <string name="about_image_photo_lyubishchev_description">In the photo Lyubishchev for a typewriter.</string>
     <string name="about_lyubishchev_title">alexander lyubishchev — soviet scientist</string>
-    <string name="about_lyubishchev_link">wikipedia article</string>
+    <string name="about_lyubishchev_link"><a href="https://medium.com/@alexpolynov/life-basics-of-time-measurement-ac3b4015fe61">read more</a></string>
     <string name="about_header2">lyubischev’s time management system</string>
     <string name="about_body2">You have to track everything you do during the whole day: working time, reading books, way to the office, having your dinner, talking to your friends and so on.</string>
     <string name="about_header3_1">such approach can bring a lot of helpful stuff</string>

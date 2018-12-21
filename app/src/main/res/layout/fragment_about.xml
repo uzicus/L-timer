@@ -110,12 +110,13 @@
             app:layout_constraintTop_toTopOf="@+id/aboutLyubishchevImage"/>
 
         <TextView
+            android:id="@+id/aboutLinkText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/montserrat_extra_bold"
             android:text="@string/about_lyubishchev_link"
-            android:textColor="?colorPrimary"
+            android:textColorLink="?colorPrimary"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@+id/endGuideline"
             app:layout_constraintStart_toStartOf="@+id/startGuideline"
