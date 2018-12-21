@@ -19,8 +19,6 @@ class StatisticsScreenPm : BaseScreenPm() {
         YEAR
     }
 
-    private val filteredTasks = State<List<StatisticsTask>>()
-
     val period = State(Period.DAY)
     val chartTasks = State<List<StatisticsTask>>()
     val listTasks = State<List<StatisticsTask>>()
@@ -28,6 +26,7 @@ class StatisticsScreenPm : BaseScreenPm() {
     val labelClicks = Action<Period>()
 
     override fun onCreate() {
+        super.onCreate()
 
         timerModel.tasksWithTimeRecords()
             .firstOrError()
@@ -39,22 +38,21 @@ class StatisticsScreenPm : BaseScreenPm() {
             period.observable
         )
             .map { (tasks, period) ->
-                tasks.statisticsByPeriod(period) to tasks
-            }
-            .distinctUntilChanged()
-            .subscribe { (filteredTasks, tasks) ->
-                val tasksSortByDayToIndex = tasks.statisticsByPeriod(Period.DAY)
+                val tasksFilterAndSortOfDay = tasks.filterAndSortByPeriod(Period.DAY)
                     .mapIndexed { index, statisticsTask ->
                         statisticsTask.name to index
                     }
                     .toMap()
 
-                val tasksSortByDay = filteredTasks.sortedBy {
-                    tasksSortByDayToIndex[it.name]
-                }
+                val tasksList = tasks.filterAndSortByPeriod(period)
+                val tasksChart = tasksList.sortedBy { tasksFilterAndSortOfDay[it.name] }
 
-                listTasks.consumer.accept(filteredTasks)
-                chartTasks.consumer.accept(tasksSortByDay)
+                tasksList to tasksChart
+            }
+            .distinctUntilChanged()
+            .subscribe { (tasksList, tasksChart) ->
+                listTasks.consumer.accept(tasksList)
+                chartTasks.consumer.accept(tasksChart)
             }
             .untilDestroy()
 
@@ -63,7 +61,7 @@ class StatisticsScreenPm : BaseScreenPm() {
             .untilDestroy()
     }
 
-    private fun List<TaskWithTimeRecords>.statisticsByPeriod(period: Period): List<StatisticsTask> {
+    private fun List<TaskWithTimeRecords>.filterAndSortByPeriod(period: Period): List<StatisticsTask> {
         val filteredTasks = this
             .filter { taskWithTimeRecords ->
                 taskWithTimeRecords.timeRecordsDuration != 0L
