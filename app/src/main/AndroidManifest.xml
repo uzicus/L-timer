@@ -15,6 +15,7 @@
         <activity
             android:name="com.tkachenkod.ltimer.ui.MainActivity"
             android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing">
 
             <intent-filter>
