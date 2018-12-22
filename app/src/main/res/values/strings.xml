@@ -49,4 +49,5 @@
     <string name="about_body5_2_1">Perhaps you a learn to play the piano and know to become desire level have to practice at least 5 hours per week. Then you track practice time with L-timer and find out that real practice is only 2 hour per week. </string>
     <string name="about_body5_2_2">After that, you have accurate time data and an understanding that you can’t get the goal with 2 hours. So you have to arrange your time another way to spent 5 hours of practice.</string>
 
+    <string name="notification_channel_timer_name">Timer</string>
 </resources>

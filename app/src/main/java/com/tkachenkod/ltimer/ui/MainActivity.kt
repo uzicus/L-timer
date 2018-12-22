@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.tkachenkod.ltimer.R
+import com.tkachenkod.ltimer.system.TimerNotificationService
 import com.tkachenkod.ltimer.ui.base.BackHandler
 import kotlinx.android.synthetic.main.activity_main.*
 import me.dmdev.rxpm.navigation.NavigationMessage
@@ -33,6 +34,12 @@ class MainActivity : AppCompatActivity(), NavigationMessageHandler {
 
         when (message) {
             is BackMessage -> super.onBackPressed()
+
+            is ShowTimerNotificationMessage -> {
+                if (TimerNotificationService.isRunning().not()) {
+                    TimerNotificationService.showTimerNotification(this, message.timer)
+                }
+            }
         }
 
         return true

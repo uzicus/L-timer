@@ -5,4 +5,6 @@
     <dimen name="timer_button_normal_width_percent">.35</dimen>
     <dimen name="timer_button_pulse_width_percent">.38</dimen>
 
+    <dimen name="timer_notification_text_size">36sp</dimen>
+    <dimen name="timer_notification_stop_text_size">16sp</dimen>
 </resources>

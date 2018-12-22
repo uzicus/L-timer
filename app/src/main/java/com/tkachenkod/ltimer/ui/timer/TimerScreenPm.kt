@@ -5,14 +5,13 @@ import com.tkachenkod.ltimer.entity.TimeRecord
 import com.tkachenkod.ltimer.extension.inject
 import com.tkachenkod.ltimer.model.TimerModel
 import com.tkachenkod.ltimer.ui.BackMessage
+import com.tkachenkod.ltimer.ui.ShowTimerNotificationMessage
 import com.tkachenkod.ltimer.ui.base.BaseScreenPm
+import com.tkachenkod.ltimer.utils.toMaybeValue
 import io.reactivex.Completable
-import io.reactivex.Maybe
-import io.reactivex.Observable
 import io.reactivex.rxkotlin.Maybes.zip
 import io.reactivex.rxkotlin.withLatestFrom
 import me.dmdev.rxpm.widget.inputControl
-import java.util.concurrent.TimeUnit
 
 class TimerScreenPm : BaseScreenPm() {
 
@@ -29,7 +28,7 @@ class TimerScreenPm : BaseScreenPm() {
     enum class ScreenState {
         DASHBOARD,
         ENTERING_TASK,
-        RECORDING
+        RECORDING,
     }
 
     val screenState = State<ScreenState>()
@@ -55,27 +54,21 @@ class TimerScreenPm : BaseScreenPm() {
     override fun onCreate() {
         super.onCreate()
 
-        Observable.interval(0, 1, TimeUnit.SECONDS)
-            .withLatestFrom(timerModel.currentTimeRecord())
-            .map { (_, currentTimeRecord) ->
-                currentTimeRecord.valueOrNull?.duration ?: 0
-            }
-            .subscribe(timerSeconds.consumer)
-            .untilDestroy()
+        timerModel.currentTimerIntervalObservable()
+            .subscribe { optionalCurrentTimeRecord ->
+                val currentTimeRecord = optionalCurrentTimeRecord.valueOrNull
+                val currentScreenState = screenState.valueOrNull
 
-        timerModel.currentTimeRecord()
-            .firstOrError()
-            .retry()
-            .subscribe { currentTimeRecord ->
-                if (currentTimeRecord.isEmpty.not()) {
+                if (currentTimeRecord != null && currentScreenState != ScreenState.ENTERING_TASK) {
                     taskNameState.consumer.accept(TaskNameState.SHOWING)
                     screenState.consumer.accept(ScreenState.RECORDING)
-                } else {
+                    sendMessage(ShowTimerNotificationMessage(currentTimeRecord.duration))
+                } else if (currentScreenState != ScreenState.DASHBOARD && currentScreenState != ScreenState.ENTERING_TASK) {
                     taskNameState.consumer.accept(TaskNameState.NOTHING)
                     screenState.consumer.accept(ScreenState.DASHBOARD)
                 }
 
-                timerSeconds.consumer.accept(currentTimeRecord.valueOrNull?.duration ?: 0)
+                timerSeconds.consumer.accept(currentTimeRecord?.duration ?: 0)
             }
             .untilDestroy()
 
@@ -109,11 +102,7 @@ class TimerScreenPm : BaseScreenPm() {
                             shakeTaskName.consumer.accept(Unit)
                         }
                     }
-                    else -> {
-                        stopTimer()
-                        screenState.consumer.accept(ScreenState.DASHBOARD)
-                        taskNameState.consumer.accept(TaskNameState.NOTHING)
-                    }
+                    else -> { stopTimer() }
                 }
             }
             .untilDestroy()
@@ -216,15 +205,11 @@ class TimerScreenPm : BaseScreenPm() {
     private fun stopTimer() {
         val currentTimeRecord = timerModel.currentTimeRecord()
             .firstOrError()
-            .flatMapMaybe { currentTimeRecord ->
-                currentTimeRecord.valueOrNull?.let { Maybe.just(it) } ?: Maybe.empty()
-            }
+            .toMaybeValue()
 
         val currentTask = timerModel.currentTask()
             .firstOrError()
-            .flatMapMaybe { currentTask ->
-                currentTask.valueOrNull?.let { Maybe.just(it) } ?: Maybe.empty()
-            }
+            .toMaybeValue()
 
         zip(currentTimeRecord, currentTask)
             .flatMapSingle { (currentTimeRecord, currentTask) ->
