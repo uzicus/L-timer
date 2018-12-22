@@ -23,6 +23,7 @@ import com.tkachenkod.ltimer.ui.base.adapter.BaseListAdapter
 import com.tkachenkod.ltimer.ui.base.adapter.DiffItemsCallback
 import com.tkachenkod.ltimer.ui.timer.TimerScreenPm.ScreenState
 import com.tkachenkod.ltimer.ui.timer.TimerScreenPm.TaskNameState
+import com.tkachenkod.ltimer.utils.Formatter
 import kotlinx.android.synthetic.main.fragment_timer.*
 import kotlinx.android.synthetic.main.item_last_task.*
 
@@ -41,11 +42,7 @@ class TimerScreen : BaseScreen<TimerScreenPm>(), BackHandler {
         pm.taskNameInputControl bindTo taskInput
 
         pm.timerSeconds bindTo { seconds ->
-            timerText.text = String.format(
-                "%02d:%02d",
-                seconds % 3600 / 60,
-                seconds % 60
-            )
+            timerText.text = Formatter.timerFormat(seconds)
         }
 
         pm.taskNameState bindTo  { taskNameState ->
