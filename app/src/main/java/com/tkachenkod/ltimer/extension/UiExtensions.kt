@@ -3,13 +3,15 @@ package com.tkachenkod.ltimer.extension
 import android.animation.ValueAnimator
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Typeface
 import android.text.*
 import android.text.style.ForegroundColorSpan
 import android.view.*
 import android.view.inputmethod.InputMethodManager
-import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
-import androidx.annotation.LayoutRes
+import androidx.annotation.*
 import androidx.core.content.res.ResourcesCompat
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.DataSet
@@ -20,6 +22,13 @@ import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
 import java.util.regex.Pattern
+
+@ColorInt
+fun Context.color(@ColorRes colorId: Int) = resources.color(colorId)
+
+fun Context.font(@FontRes fontId: Int): Typeface {
+    return ResourcesCompat.getFont(this, fontId)!!
+}
 
 @ColorInt
 fun Resources.color(@ColorRes colorId: Int) = ResourcesCompat.getColor(this, colorId, null)
@@ -153,4 +162,28 @@ fun PieChart.updateData(newValues: List<Float>, animationDuration: Long) {
             start()
         }
     }
+}
+
+fun Context.textBitmap(
+    text: String,
+    @ColorRes textColorId: Int,
+    @DimenRes sizeId: Int,
+    @FontRes fontId: Int
+): Bitmap {
+    val paint = Paint()
+
+    with (paint) {
+        isAntiAlias = true
+        typeface = font(fontId)
+        color = color(textColorId)
+        textSize = resources.getDimension(sizeId)
+    }
+
+    val baseline = -paint.ascent()
+    val width = (paint.measureText(text) + 0.5f).toInt()
+    val height = (baseline + paint.descent() + 0.5f).toInt()
+    val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444)
+
+    Canvas(bitmap).drawText(text, 0f, baseline, paint)
+    return bitmap
 }

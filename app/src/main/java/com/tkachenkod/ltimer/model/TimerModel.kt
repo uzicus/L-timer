@@ -1,6 +1,7 @@
 package com.tkachenkod.ltimer.model
 
 import android.annotation.SuppressLint
+import com.jakewharton.rxrelay2.PublishRelay
 import com.tkachenkod.ltimer.database.dao.TaskDao
 import com.tkachenkod.ltimer.database.dao.TimeRecordDao
 import com.tkachenkod.ltimer.entity.Task
@@ -14,10 +15,12 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.rxkotlin.Observables.combineLatest
 import io.reactivex.rxkotlin.toObservable
+import io.reactivex.rxkotlin.withLatestFrom
 import io.reactivex.rxkotlin.zipWith
 import io.reactivex.schedulers.Schedulers
 import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.ZoneOffset
+import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 
 @SuppressLint("CheckResult")
@@ -29,7 +32,16 @@ class TimerModel(
 
     private var isColorInitialized: Boolean = false
 
+    private val currentTimer = PublishRelay.create<Optional<TimeRecord>>()
+
     init {
+
+        combineLatest(
+            Observable.interval(0, 1, TimeUnit.SECONDS),
+            currentTimeRecord()
+        )
+            .map { (_, optionalTimeRecord) -> optionalTimeRecord }
+            .subscribe(currentTimer)
 
         taskDao.taskWithTimeRecords()
             .toObservable()
@@ -107,6 +119,10 @@ class TimerModel(
             .subscribeOn(Schedulers.io())
             .subscribe()
 */
+    }
+
+    fun currentTimerIntervalObservable(): Observable<Optional<TimeRecord>> {
+        return currentTimer.hide()
     }
 
     fun tasksWithTimeRecords(): Observable<List<TaskWithTimeRecords>> {

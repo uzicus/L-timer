@@ -2,6 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.tkachenkod.ltimer">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
     <application
         android:name="com.tkachenkod.ltimer.App"
         android:allowBackup="true"
@@ -24,6 +26,8 @@
             </intent-filter>
 
         </activity>
+
+        <service android:name=".system.TimerNotificationService"/>
 
     </application>
 </manifest>

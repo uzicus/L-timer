@@ -29,4 +29,12 @@ object Formatter {
             )
         }
     }
+
+    fun timerFormat(durationInSecond: Long): String {
+        return String.format(
+            "%02d:%02d",
+            durationInSecond % 3600 / 60,
+            durationInSecond % 60
+        )
+    }
 }
