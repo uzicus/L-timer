@@ -1,7 +1,6 @@
 package com.tkachenkod.ltimer.system
 
 import android.app.*
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -9,17 +8,21 @@ import android.os.Build
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.tkachenkod.ltimer.R
+import com.tkachenkod.ltimer.extension.color
 import com.tkachenkod.ltimer.extension.notificationManager
 import com.tkachenkod.ltimer.extension.textBitmap
 import com.tkachenkod.ltimer.model.TimerModel
 import com.tkachenkod.ltimer.ui.MainActivity
 import com.tkachenkod.ltimer.utils.Formatter
+import com.tkachenkod.ltimer.utils.RxBroadcastReceiver
 import com.tkachenkod.ltimer.utils.toMaybeValue
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.rxkotlin.Observables.combineLatest
 import org.koin.android.ext.android.inject
+import timber.log.Timber
 
-class TimerNotificationService: Service() {
+class TimerNotificationService : Service() {
 
     private val timerModel: TimerModel by inject()
 
@@ -29,10 +32,6 @@ class TimerNotificationService: Service() {
         private const val ACTION_STOP_TIMER = "stop_timer"
         private const val TIMER_NOTIFICATION_ID = 100
         private const val TIMER_NOTIFICATION_CHANNEL_ID = "timer"
-
-        private var isRunning = false
-
-        fun isRunning() = isRunning
 
         fun showTimerNotification(context: Context, timer: Long) {
             val intent = Intent(context, TimerNotificationService::class.java).apply {
@@ -46,15 +45,20 @@ class TimerNotificationService: Service() {
     private val compositeDisposable = CompositeDisposable()
 
     private val notificationView: RemoteViews by lazy {
-        val onStopClicksPendingIntent = PendingIntent.getBroadcast(this, 0, Intent(ACTION_STOP_TIMER), PendingIntent.FLAG_UPDATE_CURRENT)
-
         RemoteViews(packageName, R.layout.layout_timer_notification).apply {
+            val onStopClicksPendingIntent = PendingIntent.getBroadcast(
+                this@TimerNotificationService,
+                0,
+                Intent(ACTION_STOP_TIMER),
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
             setOnClickPendingIntent(R.id.stopImageText, onStopClicksPendingIntent)
         }
     }
 
     private val notificationBuilder: NotificationCompat.Builder by lazy {
-        val openActivityIntent = PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java), 0)
+        val openActivityIntent =
+            PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java), 0)
 
         NotificationCompat.Builder(this, TIMER_NOTIFICATION_CHANNEL_ID).apply {
             setSmallIcon(R.drawable.ic_notification)
@@ -63,66 +67,71 @@ class TimerNotificationService: Service() {
             setOnlyAlertOnce(true)
             setChannelId(TIMER_NOTIFICATION_CHANNEL_ID)
             setContentIntent(openActivityIntent)
+            setTimeoutAfter(1000)
+            color = color(R.color.colorPrimary)
         }
-    }
-
-    private val onStopClicksBroadcastReceiver = object : BroadcastReceiver() {
-
-        override fun onReceive(context: Context?, intent: Intent?) {
-            // collapse notifications drawer
-            sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
-
-            timerModel.currentTimeRecord()
-                .firstOrError()
-                .toMaybeValue()
-                .flatMapCompletable {
-                    timerModel.stop(it.id)
-                }
-                .subscribe()
-                .untilDestroy()
-        }
-
     }
 
     override fun onBind(intent: Intent?) = null
 
-    override fun onCreate() {
-        isRunning = false
-    }
-
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        isRunning = true
-        registerReceiver(onStopClicksBroadcastReceiver, IntentFilter(ACTION_STOP_TIMER))
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
                 TIMER_NOTIFICATION_CHANNEL_ID,
                 resources.getString(R.string.notification_channel_timer_name),
-                NotificationManager.IMPORTANCE_HIGH
-            ).apply {
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+
+            notificationChannel.apply {
+                setShowBadge(true)
                 setSound(null, null)
                 enableVibration(false)
             }
+
             notificationManager.createNotificationChannel(notificationChannel)
         }
 
-        val startTimer = intent?.getLongExtra(EXTRA_TIMER, 0) ?: 0
-        startForeground(TIMER_NOTIFICATION_ID, createTimerNotification(startTimer))
+        val screenEnabledObservable = RxBroadcastReceiver(this, IntentFilter().apply {
+            addAction(Intent.ACTION_SCREEN_ON)
+            addAction(Intent.ACTION_SCREEN_OFF)
+        })
+            .map { receiverIntent ->
+                receiverIntent.action == Intent.ACTION_SCREEN_ON
+            }
+            .startWith(true)
 
-        timerModel.currentTimerIntervalObservable()
-            .subscribe { optionalTimeRecord ->
-                if (optionalTimeRecord.isEmpty) {
+        combineLatest(
+            timerModel.currentTimerIntervalObservable(),
+            screenEnabledObservable
+        )
+            .subscribe { (optionalTimeRecord, isScreenEnabled) ->
+                val timeRecord = optionalTimeRecord.valueOrNull
+
+                if (timeRecord != null) {
+                    if (isScreenEnabled) {
+                        val notification = createTimerNotification(timeRecord.duration)
+                        startForeground(TIMER_NOTIFICATION_ID, notification)
+                        notificationManager.notify(TIMER_NOTIFICATION_ID, notification)
+                        Timber.d("notify timer: ${timeRecord.duration}")
+                    }
+                } else {
                     stopForeground(true)
                     notificationManager.cancel(TIMER_NOTIFICATION_ID)
-                } else {
-                    optionalTimeRecord.valueOrNull?.also {
-                        notificationManager.notify(
-                            TIMER_NOTIFICATION_ID,
-                            createTimerNotification(it.duration)
-                        )
-                    }
                 }
             }
+            .untilDestroy()
+
+        RxBroadcastReceiver(this, IntentFilter(ACTION_STOP_TIMER))
+            .flatMapMaybe {
+                timerModel.currentTimeRecord()
+                    .firstOrError()
+                    .toMaybeValue()
+            }
+            .flatMapCompletable {
+                sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
+                timerModel.stop(it.id)
+            }
+            .subscribe()
             .untilDestroy()
 
         return super.onStartCommand(intent, flags, startId)
@@ -132,8 +141,6 @@ class TimerNotificationService: Service() {
         compositeDisposable.dispose()
         notificationManager.cancel(TIMER_NOTIFICATION_ID)
         stopForeground(true)
-        unregisterReceiver(onStopClicksBroadcastReceiver)
-        isRunning = false
     }
 
     private fun createTimerNotification(timer: Long): Notification {
@@ -156,7 +163,9 @@ class TimerNotificationService: Service() {
         notificationView.setImageViewBitmap(R.id.timerImageText, timerTextBitmap)
         notificationView.setImageViewBitmap(R.id.stopImageText, stopTextBitmap)
 
-        return notificationBuilder.build()
+        return notificationBuilder.apply {
+            setWhen(System.currentTimeMillis())
+        }.build()
     }
 
     private fun Disposable.untilDestroy() {
