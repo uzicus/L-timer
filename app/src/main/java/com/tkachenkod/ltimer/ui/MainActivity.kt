@@ -1,10 +1,10 @@
 package com.tkachenkod.ltimer.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.tkachenkod.ltimer.R
-import com.tkachenkod.ltimer.extension.serviceIsRunning
 import com.tkachenkod.ltimer.system.TimerNotificationService
 import com.tkachenkod.ltimer.ui.base.BackHandler
 import kotlinx.android.synthetic.main.activity_main.*
@@ -16,6 +16,11 @@ class MainActivity : AppCompatActivity(), NavigationMessageHandler {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        startService(Intent(this, TimerNotificationService::class.java))
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -35,12 +40,6 @@ class MainActivity : AppCompatActivity(), NavigationMessageHandler {
 
         when (message) {
             is BackMessage -> super.onBackPressed()
-
-            is ShowTimerNotificationMessage -> {
-                if (serviceIsRunning<TimerNotificationService>().not()) {
-                    TimerNotificationService.showTimerNotification(this, message.timer)
-                }
-            }
         }
 
         return true

@@ -1,5 +1,6 @@
 package com.tkachenkod.ltimer.entity
 
+import android.os.SystemClock
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -32,4 +33,6 @@ data class TimeRecord(
             return endEpochSecond - startTime.toEpochSecond()
         }
 
+    val elapsedRealtime: Long
+        get() = SystemClock.elapsedRealtime() - (duration * 1000)
 }
