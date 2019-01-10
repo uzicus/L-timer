@@ -5,7 +5,6 @@ import com.tkachenkod.ltimer.entity.TimeRecord
 import com.tkachenkod.ltimer.extension.inject
 import com.tkachenkod.ltimer.model.TimerModel
 import com.tkachenkod.ltimer.ui.BackMessage
-import com.tkachenkod.ltimer.ui.ShowTimerNotificationMessage
 import com.tkachenkod.ltimer.ui.base.BaseScreenPm
 import com.tkachenkod.ltimer.utils.toMaybeValue
 import io.reactivex.Completable
@@ -62,7 +61,6 @@ class TimerScreenPm : BaseScreenPm() {
                 if (currentTimeRecord != null && currentScreenState != ScreenState.ENTERING_TASK) {
                     taskNameState.consumer.accept(TaskNameState.SHOWING)
                     screenState.consumer.accept(ScreenState.RECORDING)
-                    sendMessage(ShowTimerNotificationMessage(currentTimeRecord.duration))
                 } else if (currentScreenState != ScreenState.DASHBOARD && currentScreenState != ScreenState.ENTERING_TASK) {
                     taskNameState.consumer.accept(TaskNameState.NOTHING)
                     screenState.consumer.accept(ScreenState.DASHBOARD)
