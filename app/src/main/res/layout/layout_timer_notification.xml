@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="82dp">
+    android:layout_height="82dp"
+    tools:ignore="ContentDescription">
 
     <ImageView
         android:layout_width="match_parent"
@@ -9,12 +11,15 @@
         android:layout_toStartOf="@+id/stopImageText"
         android:background="@drawable/bg_timer_notification"/>
 
-    <ImageView
-        android:id="@+id/timerImageText"
+    <Chronometer
+        android:id="@+id/timerChronometer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:padding="16dp"/>
+        android:padding="16dp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:textSize="36sp"/>
 
     <ImageView
         android:id="@+id/stopImageText"
