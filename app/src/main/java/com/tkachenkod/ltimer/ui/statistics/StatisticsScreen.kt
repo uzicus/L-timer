@@ -12,7 +12,6 @@ import com.tkachenkod.ltimer.extension.inflate
 import com.tkachenkod.ltimer.extension.updateData
 import com.tkachenkod.ltimer.ui.base.BaseScreen
 import com.tkachenkod.ltimer.ui.base.adapter.BaseListAdapter
-import com.tkachenkod.ltimer.ui.base.adapter.DiffItemsCallback
 import com.tkachenkod.ltimer.ui.statistics.StatisticsScreenPm.Period
 import com.tkachenkod.ltimer.utils.Formatter
 import kotlinx.android.synthetic.main.fragment_statistics.*
@@ -25,7 +24,6 @@ class StatisticsScreen : BaseScreen<StatisticsScreenPm>() {
     override fun providePresentationModel() = StatisticsScreenPm()
 
     private val tasksAdapter = TasksAdapter()
-    private val tasksDiffItemsCallback = TasksDiffItemsCallback()
 
     private val animationDuration: Long by lazy {
         resources.getInteger(R.integer.statistics_chart_changes_animation_duration).toLong()
@@ -60,7 +58,7 @@ class StatisticsScreen : BaseScreen<StatisticsScreenPm>() {
             emptyLayout.isInvisible = tasks.isNotEmpty()
             contentLayout.isInvisible = tasks.isEmpty()
 
-            tasksAdapter.updateItems(tasks, tasksDiffItemsCallback)
+            tasksAdapter.updateItems(tasks)
         }
 
         pm.chartTasks bindTo { tasks ->
@@ -93,6 +91,22 @@ class StatisticsScreen : BaseScreen<StatisticsScreenPm>() {
 
     class TasksAdapter : BaseListAdapter<StatisticsTask, TasksAdapter.TaskViewHolder>() {
 
+        override fun areItemsTheSame(
+            oldItem: StatisticsTask,
+            newItem: StatisticsTask
+        ): Boolean {
+            return oldItem.name == newItem.name
+        }
+
+        override fun areContentsTheSame(
+            oldItem: StatisticsTask,
+            newItem: StatisticsTask
+        ): Boolean {
+            return oldItem.durationInSecond == newItem.durationInSecond
+                    && oldItem.percent == newItem.percent
+                    && oldItem.color == newItem.color
+        }
+
         override fun newViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
             return TaskViewHolder(parent.inflate(R.layout.item_statistics_task))
         }
@@ -113,24 +127,4 @@ class StatisticsScreen : BaseScreen<StatisticsScreenPm>() {
 
         }
     }
-
-    class TasksDiffItemsCallback : DiffItemsCallback<StatisticsTask> {
-        override fun areItemsTheSame(
-            oldItem: StatisticsTask,
-            newItem: StatisticsTask
-        ): Boolean {
-            return oldItem.name == newItem.name
-        }
-
-        override fun areContentsTheSame(
-            oldItem: StatisticsTask,
-            newItem: StatisticsTask
-        ): Boolean {
-            return oldItem.durationInSecond == newItem.durationInSecond
-                    && oldItem.percent == newItem.percent
-                    && oldItem.color == newItem.color
-        }
-
-    }
-
 }
