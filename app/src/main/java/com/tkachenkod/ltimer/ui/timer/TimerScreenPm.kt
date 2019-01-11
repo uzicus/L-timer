@@ -30,10 +30,10 @@ class TimerScreenPm : BaseScreenPm() {
         RECORDING,
     }
 
+    val timerChronometerBase = State<Long>()
     val screenState = State<ScreenState>()
     val taskNameState = State<TaskNameState>()
     val taskName = State<String>()
-    val timerSeconds = State<Long>()
     val lastTasks = State<List<Task>>(emptyList())
 
     val taskNameInputControl = inputControl()
@@ -53,7 +53,7 @@ class TimerScreenPm : BaseScreenPm() {
     override fun onCreate() {
         super.onCreate()
 
-        timerModel.currentTimerIntervalObservable()
+        timerModel.currentTimeRecord()
             .subscribe { optionalCurrentTimeRecord ->
                 val currentTimeRecord = optionalCurrentTimeRecord.valueOrNull
                 val currentScreenState = screenState.valueOrNull
@@ -66,7 +66,9 @@ class TimerScreenPm : BaseScreenPm() {
                     screenState.consumer.accept(ScreenState.DASHBOARD)
                 }
 
-                timerSeconds.consumer.accept(currentTimeRecord?.duration ?: 0)
+                if (currentTimeRecord != null) {
+                    timerChronometerBase.consumer.accept(currentTimeRecord.elapsedRealtime)
+                }
             }
             .untilDestroy()
 

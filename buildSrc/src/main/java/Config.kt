@@ -9,7 +9,7 @@ object Config {
         val androidx_appcompat = "1.0.2"
         val androidx_core = "1.0.1"
         val androidx_legacy = "1.0.0"
-        val androidx_constraintlayout = "2.0.0-alpha2"
+        val androidx_constraintlayout = "2.0.0-alpha3"
         val androidx_room = "2.1.0-alpha02"
         val androidx_arch = "2.0.0"
         val androidx_navigation = "1.0.0-alpha08"

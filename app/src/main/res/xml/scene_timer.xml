@@ -3,34 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <Transition
-        app:constraintSetEnd="@id/timerReadyState"
-        app:constraintSetStart="@id/timerEmptyState"
-        app:duration="500"/>
-
-    <Transition
-        app:constraintSetEnd="@id/timerEnteringState"
         app:constraintSetStart="@id/timerReadyState"
+        app:constraintSetEnd="@id/timerEnteringState"
         app:duration="500"/>
 
     <Transition
+        app:constraintSetStart="@id/timerReadyState"
         app:constraintSetEnd="@id/timerRecordingState"
-        app:constraintSetStart="@id/timerEnteringState"
         app:duration="500"/>
 
     <Transition
-        app:constraintSetEnd="@id/timerRecordingPulseState"
+        app:constraintSetEnd="@id/timerEmptyState"
         app:constraintSetStart="@id/timerRecordingState"
-        app:duration="300"/>
-
-    <Transition
-        app:constraintSetEnd="@id/timerRecordingState"
-        app:constraintSetStart="@id/timerRecordingPulseState"
-        app:duration="200"/>
-
-    <Transition
-        app:constraintSetEnd="@id/timerSavingState"
-        app:constraintSetStart="@id/timerRecordingState"
-        app:duration="600">
+        app:duration="500">
 
         <KeyFrameSet>
 
@@ -61,7 +46,7 @@
             <KeyAttribute
                 android:alpha="0"
                 app:framePosition="10"
-                app:target="@id/timerText"/>
+                app:target="@id/timerChronometer"/>
 
             <KeyAttribute
                 android:alpha="0"
@@ -71,90 +56,47 @@
         </KeyFrameSet>
     </Transition>
 
-    <ConstraintSet android:id="@+id/timerEmptyState">
+    <Transition
+        app:constraintSetStart="@id/timerEmptyState"
+        app:constraintSetEnd="@id/timerReadyState"
+        app:duration="500">
 
-        <Constraint
-            android:id="@+id/taskNameLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/middleVerticalGuideline"
-            app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
-            app:layout_constraintStart_toStartOf="@+id/startGuideline"
-            app:layout_constraintTop_toTopOf="parent"/>
+        <KeyFrameSet>
 
-        <Constraint
-            android:id="@+id/button"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/middleVerticalGuideline"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="@dimen/timer_button_normal_width_percent"/>
+            <KeyPosition
+                app:framePosition="1"
+                app:keyPositionType="deltaRelative"
+                app:percentX="1"
+                app:percentY="1"
+                app:target="@id/button"/>
 
-        <Constraint
-            android:id="@+id/addTaskText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button"/>
+            <KeyPosition
+                app:framePosition="1"
+                app:keyPositionType="deltaRelative"
+                app:percentX="1"
+                app:percentY="1"
+                app:target="@id/addTaskText"/>
 
-        <Constraint
-            android:id="@+id/startText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button"/>
+            <KeyAttribute
+                app:framePosition="80"
+                android:alpha="0"
+                app:target="@id/addTaskText"/>
 
-        <Constraint
-            android:id="@+id/timerText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/stopText"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button"
-            app:layout_constraintVertical_chainStyle="packed"/>
+            <KeyAttribute
+                app:framePosition="80"
+                android:alpha="0"
+                app:target="@id/button"/>
 
-        <Constraint
-            android:id="@+id/stopText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toBottomOf="@+id/timerText"/>
+        </KeyFrameSet>
 
-    </ConstraintSet>
+
+    </Transition>
 
     <ConstraintSet android:id="@+id/timerReadyState">
 
         <Constraint
-            android:id="@+id/taskNameLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/middleVerticalGuideline"
-            app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
-            app:layout_constraintStart_toStartOf="@+id/startGuideline"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <Constraint
             android:id="@+id/button"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:visibility="visible"
+            android:alpha="1"
             app:layout_constraintBottom_toBottomOf="@+id/middleVerticalGuideline"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
@@ -162,66 +104,32 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="@dimen/timer_button_normal_width_percent"/>
 
-        <Constraint
-            android:id="@+id/addTaskText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button"/>
+        <Constraint android:id="@+id/taskNameLayout">
+            <PropertySet app:alpha="0"/>
+        </Constraint>
 
-        <Constraint
-            android:id="@id/startText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button"/>
+        <Constraint android:id="@+id/addTaskText">
+            <PropertySet app:alpha="1"/>
+        </Constraint>
 
-        <Constraint
-            android:id="@id/timerText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/stopText"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button"
-            app:layout_constraintVertical_chainStyle="packed"/>
+        <Constraint android:id="@id/startText">
+            <PropertySet app:alpha="0"/>
+        </Constraint>
 
-        <Constraint
-            android:id="@id/stopText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toBottomOf="@+id/timerText"/>
+        <Constraint android:id="@id/timerChronometer">
+            <PropertySet app:alpha="0"/>
+        </Constraint>
+
+        <Constraint android:id="@id/stopText">
+            <PropertySet app:alpha="0"/>
+        </Constraint>
 
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/timerEnteringState">
 
         <Constraint
-            android:id="@+id/taskNameLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/middleVerticalGuideline"
-            app:layout_constraintEnd_toStartOf="@+id/centerGuideline"
-            app:layout_constraintStart_toStartOf="@+id/startGuideline"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <Constraint
             android:id="@+id/button"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/middleVerticalGuideline"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
@@ -229,66 +137,32 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="@dimen/timer_button_normal_width_percent"/>
 
-        <Constraint
-            android:id="@+id/addTaskText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button"/>
+        <Constraint android:id="@+id/taskNameLayout">
+            <PropertySet app:alpha="1"/>
+        </Constraint>
 
-        <Constraint
-            android:id="@id/startText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button"/>
+        <Constraint android:id="@+id/addTaskText">
+            <PropertySet app:alpha="0"/>
+        </Constraint>
 
-        <Constraint
-            android:id="@id/timerText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/stopText"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button"
-            app:layout_constraintVertical_chainStyle="packed"/>
+        <Constraint android:id="@id/startText">
+            <PropertySet app:alpha="1"/>
+        </Constraint>
 
-        <Constraint
-            android:id="@id/stopText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toBottomOf="@+id/timerText"/>
+        <Constraint android:id="@+id/timerChronometer">
+            <PropertySet app:alpha="0"/>
+        </Constraint>
+
+        <Constraint android:id="@id/stopText">
+            <PropertySet app:alpha="0"/>
+        </Constraint>
 
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/timerRecordingState">
 
         <Constraint
-            android:id="@+id/taskNameLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/middleVerticalGuideline"
-            app:layout_constraintEnd_toStartOf="@+id/centerSecondGuideline"
-            app:layout_constraintStart_toStartOf="@+id/startGuideline"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <Constraint
             android:id="@+id/button"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/middleVerticalGuideline"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
@@ -296,179 +170,60 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="@dimen/timer_button_normal_width_percent"/>
 
-        <Constraint
-            android:id="@+id/addTaskText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button"/>
+        <Constraint android:id="@+id/taskNameLayout">
+            <PropertySet app:alpha="1"/>
+        </Constraint>
 
-        <Constraint
-            android:id="@id/startText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button"/>
+        <Constraint android:id="@+id/addTaskText">
+            <PropertySet app:alpha="0"/>
+        </Constraint>
 
-        <Constraint
-            android:id="@id/timerText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/stopText"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button"
-            app:layout_constraintVertical_chainStyle="packed"/>
+        <Constraint android:id="@id/startText">
+            <PropertySet app:alpha="0"/>
+        </Constraint>
 
-        <Constraint
-            android:id="@id/stopText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toBottomOf="@+id/timerText"/>
+        <Constraint android:id="@id/timerChronometer">
+            <PropertySet app:alpha="1"/>
+        </Constraint>
+
+        <Constraint android:id="@id/stopText">
+            <PropertySet app:alpha="1"/>
+        </Constraint>
 
     </ConstraintSet>
 
-    <ConstraintSet android:id="@+id/timerRecordingPulseState">
-
-        <Constraint
-            android:id="@+id/taskNameLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/middleVerticalGuideline"
-            app:layout_constraintEnd_toStartOf="@+id/centerSecondGuideline"
-            app:layout_constraintStart_toStartOf="@+id/startGuideline"
-            app:layout_constraintTop_toTopOf="parent"/>
+    <ConstraintSet android:id="@+id/timerEmptyState">
 
         <Constraint
             android:id="@+id/button"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/middleVerticalGuideline"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/centerSecondGuideline"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="@dimen/timer_button_pulse_width_percent"/>
-
-        <Constraint
-            android:id="@+id/addTaskText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button"/>
-
-        <Constraint
-            android:id="@id/startText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button"/>
-
-        <Constraint
-            android:id="@id/timerText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/stopText"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button"
-            app:layout_constraintVertical_chainStyle="packed"/>
-
-        <Constraint
-            android:id="@id/stopText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toBottomOf="@+id/timerText"/>
-
-    </ConstraintSet>
-
-    <ConstraintSet android:id="@+id/timerSavingState">
-
-        <Constraint
-            android:id="@+id/taskNameLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button"/>
-
-        <Constraint
-            android:id="@+id/button"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:visibility="invisible"
+            android:alpha="0"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="parent"
             app:layout_constraintWidth_percent="@dimen/timer_button_collapsed_width_percent"/>
 
-        <Constraint
-            android:id="@+id/addTaskText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button"/>
+        <Constraint android:id="@+id/taskNameLayout">
+            <PropertySet app:alpha="0"/>
+        </Constraint>
 
-        <Constraint
-            android:id="@id/startText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button"/>
+        <Constraint android:id="@+id/addTaskText">
+            <PropertySet app:alpha="0"/>
+        </Constraint>
 
-        <Constraint
-            android:id="@id/timerText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/stopText"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button"
-            app:layout_constraintVertical_chainStyle="packed"/>
+        <Constraint android:id="@id/startText">
+            <PropertySet app:alpha="0"/>
+        </Constraint>
 
-        <Constraint
-            android:id="@id/stopText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="@+id/button"
-            app:layout_constraintStart_toStartOf="@+id/button"
-            app:layout_constraintTop_toBottomOf="@+id/timerText"/>
+        <Constraint android:id="@id/timerChronometer">
+            <PropertySet app:alpha="0"/>
+        </Constraint>
+
+        <Constraint android:id="@id/stopText">
+            <PropertySet app:alpha="0"/>
+        </Constraint>
 
     </ConstraintSet>
 
