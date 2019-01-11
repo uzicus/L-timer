@@ -8,7 +8,6 @@ import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.isInvisible
-import androidx.core.view.postDelayed
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionManager
 import com.google.android.material.snackbar.Snackbar
@@ -20,10 +19,8 @@ import com.tkachenkod.ltimer.extension.*
 import com.tkachenkod.ltimer.ui.base.BackHandler
 import com.tkachenkod.ltimer.ui.base.BaseScreen
 import com.tkachenkod.ltimer.ui.base.adapter.BaseListAdapter
-import com.tkachenkod.ltimer.ui.base.adapter.DiffItemsCallback
 import com.tkachenkod.ltimer.ui.timer.TimerScreenPm.ScreenState
 import com.tkachenkod.ltimer.ui.timer.TimerScreenPm.TaskNameState
-import com.tkachenkod.ltimer.utils.Formatter
 import kotlinx.android.synthetic.main.fragment_timer.*
 import kotlinx.android.synthetic.main.item_last_task.*
 
@@ -34,18 +31,30 @@ class TimerScreen : BaseScreen<TimerScreenPm>(), BackHandler {
     override val screenLayout: Int = R.layout.fragment_timer
 
     private val lastTasksAdapter = LastTasksAdapter()
-    private val lastTasksDiffItemsCallback = LastTasksDiffItemsCallback()
-    private val transitionHelper = TransitionHelper()
+
+    private val pulseAnimation by lazy {
+        AnimationUtils.loadAnimation(context, R.anim.pulse)
+    }
+
+    private val shakeAnimation by lazy {
+        AnimationUtils.loadAnimation(context, R.anim.shake)
+    }
+
+    private val isChangeScreenStateRunning: Boolean
+        get() = rootLayout.progress != 0F
+                && rootLayout.progress != 1F
 
     override fun onBindPresentationModel(pm: TimerScreenPm) {
         pm.taskName bindTo taskText::setText
         pm.taskNameInputControl bindTo taskInput
 
-        pm.timerSeconds bindTo { seconds ->
-            timerText.text = Formatter.timerFormat(seconds)
+        pm.timerChronometerBase bindTo {
+            timerChronometer.stop()
+            timerChronometer.base = it
+            timerChronometer.start()
         }
 
-        pm.taskNameState bindTo  { taskNameState ->
+        pm.taskNameState bindTo { taskNameState ->
             TransitionManager.beginDelayedTransition(taskNameLayout)
 
             taskInput.isInvisible = taskNameState != TaskNameState.ENTERING
@@ -59,26 +68,23 @@ class TimerScreen : BaseScreen<TimerScreenPm>(), BackHandler {
         }
 
         pm.screenState bindTo { screenState ->
-            when (screenState) {
-                ScreenState.DASHBOARD -> {
-                    if (transitionHelper.pulseAnimation) {
-                        transitionHelper.pulseAnimation = false
-                        rootLayout.setTransition(R.id.timerRecordingState, R.id.timerSavingState)
-                        rootLayout.transitionToEnd()
-                    } else if (rootLayout.currentState == R.id.timerSavingState) {
-                        rootLayout.transitionToState(R.id.timerEmptyState)
-                    } else {
-                        rootLayout.transitionToState(R.id.timerReadyState)
+            if (isChangeScreenStateRunning.not()) {
+                when (screenState) {
+                    ScreenState.DASHBOARD -> {
+                        timerChronometer.stop()
+
+                        if (rootLayout.currentState == R.id.timerRecordingState) {
+                            rootLayout.transitionToState(R.id.timerEmptyState)
+                        } else {
+                            rootLayout.transitionToState(R.id.timerReadyState)
+                        }
                     }
-                }
-                ScreenState.ENTERING_TASK -> {
-                    rootLayout.transitionToState(R.id.timerEnteringState)
-                }
-                ScreenState.RECORDING -> {
-                    if (transitionHelper.pulseAnimation.not()) {
+                    ScreenState.ENTERING_TASK -> {
+                        rootLayout.transitionToState(R.id.timerEnteringState)
+                    }
+                    ScreenState.RECORDING -> {
                         rootLayout.transitionToState(R.id.timerRecordingState)
                     }
-                    transitionHelper.pulseAnimation = true
                 }
             }
         }
@@ -87,12 +93,11 @@ class TimerScreen : BaseScreen<TimerScreenPm>(), BackHandler {
             lastTasksTitleText.isInvisible = lastTasks.isEmpty()
             lastTasksRecyclerView.isInvisible = lastTasks.isEmpty()
 
-            lastTasksAdapter.updateItems(lastTasks, lastTasksDiffItemsCallback)
+            lastTasksAdapter.updateItems(lastTasks)
         }
 
         pm.shakeTaskName bindTo {
-            val animation = AnimationUtils.loadAnimation(taskInput.context, R.anim.shake)
-            taskInput.startAnimation(animation)
+            taskInput.startAnimation(shakeAnimation)
         }
 
         pm.showTaskSavedMsg bindTo { savedTask ->
@@ -128,8 +133,6 @@ class TimerScreen : BaseScreen<TimerScreenPm>(), BackHandler {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        rootLayout.setTransitionListener(transitionHelper)
-
         with(lastTasksRecyclerView) {
             layoutManager = LinearLayoutManager(context)
             adapter = lastTasksAdapter
@@ -137,48 +140,35 @@ class TimerScreen : BaseScreen<TimerScreenPm>(), BackHandler {
 
         taskEdit.imeOptions = EditorInfo.IME_ACTION_DONE
         taskEdit.setRawInputType(InputType.TYPE_CLASS_TEXT)
-    }
 
-    inner class TransitionHelper : MotionLayout.TransitionListener {
+        rootLayout.setTransitionListener(object : MotionLayout.TransitionListener {
+            override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {}
+            override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {}
+            override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {}
 
-        var pulseAnimation = false
-
-        override fun onTransitionChange(
-            motionLayout: MotionLayout,
-            startId: Int,
-            endId: Int,
-            progress: Float
-        ) {
-        }
-
-        override fun onTransitionCompleted(motionLayout: MotionLayout, stateId: Int) {
-            // D>- onTransitionCompleted may not be called after the pulse animation
-            rootLayout.postDelayed(50) {
-                if (pulseAnimation) {
-                    when (stateId) {
-                        R.id.timerRecordingPulseState -> {
-                            rootLayout.transitionToState(R.id.timerRecordingState)
-                        }
-                        else -> {
-                            rootLayout.transitionToState(R.id.timerRecordingPulseState)
-                        }
-                    }
-                } else {
-                    when (stateId) {
-                        R.id.timerSavingState -> {
-                            rootLayout.transitionToState(R.id.timerEmptyState)
-                        }
-                        R.id.timerEmptyState -> {
-                            rootLayout.transitionToState(R.id.timerReadyState)
-                        }
-                    }
+            override fun onTransitionCompleted(motionLayout: MotionLayout, stateId: Int) {
+                if (stateId == R.id.timerEmptyState) {
+                    rootLayout.transitionToState(R.id.timerReadyState)
                 }
             }
-        }
+        })
 
+        timerChronometer.setOnChronometerTickListener {
+            if (isChangeScreenStateRunning.not()) {
+                button.startAnimation(pulseAnimation)
+            }
+        }
     }
 
     inner class LastTasksAdapter : BaseListAdapter<Task, LastTasksAdapter.LastTaskViewHolder>() {
+
+        override fun areItemsTheSame(oldItem: Task, newItem: Task): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Task, newItem: Task): Boolean {
+            return oldItem.name == newItem.name && oldItem.color == newItem.color
+        }
 
         override fun newViewHolder(parent: ViewGroup, viewType: Int): LastTaskViewHolder {
             return LastTaskViewHolder(parent.inflate(R.layout.item_last_task))
@@ -200,18 +190,6 @@ class TimerScreen : BaseScreen<TimerScreenPm>(), BackHandler {
             }
 
         }
-    }
-
-    class LastTasksDiffItemsCallback : DiffItemsCallback<Task> {
-
-        override fun areItemsTheSame(oldItem: Task, newItem: Task): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(oldItem: Task, newItem: Task): Boolean {
-            return oldItem.name == newItem.name && oldItem.color == newItem.color
-        }
-
     }
 
 }

@@ -10,7 +10,8 @@ import kotlinx.android.extensions.LayoutContainer
 abstract class BaseListAdapter<T, VH>(
         private val headerLayoutRes: Int? = null,
         private val footerLayoutRes: Int? = null
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>()
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
+    DiffItemsCallback<T> by SimpleDiffCallback<T>()
         where VH : RecyclerView.ViewHolder,
               VH : Bindable<T> {
 
@@ -21,7 +22,6 @@ abstract class BaseListAdapter<T, VH>(
     }
 
     private var items: MutableList<T> = mutableListOf()
-    private val defaultDiffCallback = SimpleDiffCallback<T>()
 
     private val headerOffset: Int get() = if (headerView != null) 1 else 0
     private val footerOffset: Int get() = if (footerView != null) 1 else 0
@@ -56,12 +56,12 @@ abstract class BaseListAdapter<T, VH>(
         notifyDataSetChanged()
     }
 
-    fun updateItems(newItems: List<T>, diffCallback: DiffItemsCallback<T>) {
+    fun updateItems(newItems: List<T>) {
         if (items.isEmpty()) {
             setItems(newItems)
         } else {
 
-            val diffResult = DiffUtil.calculateDiff(DiffCallback(newItems, diffCallback))
+            val diffResult = DiffUtil.calculateDiff(DiffCallback(newItems, this))
 
             items.clear()
             items.addAll(newItems)
