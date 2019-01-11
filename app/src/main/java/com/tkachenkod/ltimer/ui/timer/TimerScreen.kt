@@ -154,7 +154,8 @@ class TimerScreen : BaseScreen<TimerScreenPm>(), BackHandler {
         })
 
         timerChronometer.setOnChronometerTickListener {
-            if (isChangeScreenStateRunning.not()) {
+            if (isChangeScreenStateRunning.not()
+                && rootLayout.currentState == R.id.timerRecordingState) {
                 button.startAnimation(pulseAnimation)
             }
         }
