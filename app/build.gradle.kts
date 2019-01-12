@@ -29,6 +29,8 @@ android {
 
     buildTypes {
         getByName("debug") {
+            versionNameSuffix = "-dev"
+            applicationIdSuffix = ".dev"
             isMinifyEnabled = false
             isZipAlignEnabled = false
         }
@@ -36,22 +38,6 @@ android {
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles("proguard-rules.pro")
-        }
-    }
-
-    flavorDimensions("screenMode")
-
-    productFlavors {
-        create("dev") {
-            setDimension("screenMode")
-            versionNameSuffix = "-dev"
-            applicationIdSuffix = ".dev"
-        }
-
-        create("prod") {
-            setDimension("screenMode")
-            versionNameSuffix = "-dev"
-            applicationIdSuffix = ".dev"
         }
     }
 
@@ -67,6 +53,11 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    sourceSets {
+        getByName("debug").java.srcDirs("src/debug/java")
+        getByName("release").java.srcDirs("src/release/java")
     }
 }
 
@@ -104,9 +95,9 @@ dependencies {
     implementation(Libs.randomColor)
     implementation(Libs.MPAndroidChart)
 
-    testImplementation(Config.Libs.junit)
-    androidTestImplementation(Config.Libs.room_test)
-    androidTestImplementation(Config.Libs.androidx_arch_core_test)
-    androidTestImplementation(Config.Libs.junit_runner)
-    androidTestImplementation(Config.Libs.espresso_core)
+    testImplementation(Libs.junit)
+    androidTestImplementation(Libs.room_test)
+    androidTestImplementation(Libs.androidx_arch_core_test)
+    androidTestImplementation(Libs.junit_runner)
+    androidTestImplementation(Libs.espresso_core)
 }
