@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.tkachenkod.ltimer.Debug
 import com.tkachenkod.ltimer.R
 import com.tkachenkod.ltimer.ui.about.AboutScreen
 import com.tkachenkod.ltimer.ui.base.BackHandler
@@ -14,8 +15,11 @@ import com.tkachenkod.ltimer.ui.base.BaseScreen
 import com.tkachenkod.ltimer.ui.statistics.StatisticsScreen
 import com.tkachenkod.ltimer.ui.timer.TimerScreen
 import kotlinx.android.synthetic.main.fragment_main.*
+import org.koin.android.ext.android.inject
 
 class MainScreen : BaseScreen<BaseScreenPm>(), BackHandler {
+
+    private val debug: Debug by inject()
 
     override fun providePresentationModel() = BaseScreenPm()
 
@@ -55,6 +59,7 @@ class MainScreen : BaseScreen<BaseScreenPm>(), BackHandler {
         viewPager.adapter = pagerAdapter
 
         bottomNavigation.setOnNavigationItemSelectedListener { item ->
+            debug.onNavigationItemSelected(activity!!, item)
             when (item.itemId) {
                 R.id.timer -> viewPager.currentItem = Page.TIMER.position()
                 R.id.statistics -> viewPager.currentItem = Page.STATISTICS.position()

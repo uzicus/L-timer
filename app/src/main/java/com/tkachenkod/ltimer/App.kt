@@ -15,6 +15,7 @@ class App : Application() {
         AndroidThreeTen.init(this)
 
         startKoin(applicationContext, listOf(
+            DebugModule,
             DatabaseModule,
             ModelModule
         ))
