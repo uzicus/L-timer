@@ -58,7 +58,7 @@ class TimerScreen : BaseScreen<TimerScreenPm>(), BackHandler {
 
         pm.timerChronometerBase bindTo {
             timerChronometer.stop()
-            timerChronometer.base = it - 3597000
+            timerChronometer.base = it
             timerChronometer.start()
         }
 
