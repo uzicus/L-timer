@@ -88,8 +88,6 @@
                 app:target="@id/button"/>
 
         </KeyFrameSet>
-
-
     </Transition>
 
     <ConstraintSet android:id="@+id/timerReadyState">
