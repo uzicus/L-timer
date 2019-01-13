@@ -14,6 +14,7 @@ import me.dmdev.rxpm.navigation.NavigationMessageHandler
 class MainActivity : AppCompatActivity(), NavigationMessageHandler {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
