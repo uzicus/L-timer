@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutDescription="@xml/scene_timer"
-    tools:currentState="@id/timerEnteringState">
+    tools:currentState="@id/timerRecordingState">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/startGuideline"
@@ -123,7 +123,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:autoSizeTextType="uniform"
         android:fontFamily="@font/montserrat_bold"
         android:fontFeatureSettings="tnum"
         android:gravity="center|bottom"

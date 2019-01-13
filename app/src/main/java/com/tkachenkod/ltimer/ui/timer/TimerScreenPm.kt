@@ -8,6 +8,7 @@ import com.tkachenkod.ltimer.ui.BackMessage
 import com.tkachenkod.ltimer.ui.base.BaseScreenPm
 import com.tkachenkod.ltimer.utils.toMaybeValue
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.rxkotlin.Maybes.zip
 import io.reactivex.rxkotlin.withLatestFrom
 import me.dmdev.rxpm.widget.inputControl
@@ -52,6 +53,10 @@ class TimerScreenPm : BaseScreenPm() {
 
     override fun onCreate() {
         super.onCreate()
+
+        taskName.observable
+            .subscribe(taskNameInputControl.text.consumer)
+            .untilDestroy()
 
         timerModel.currentTimeRecord()
             .subscribe { optionalCurrentTimeRecord ->
@@ -102,7 +107,7 @@ class TimerScreenPm : BaseScreenPm() {
                             shakeTaskName.consumer.accept(Unit)
                         }
                     }
-                    else -> { stopTimer() }
+                    else -> stopTimer()
                 }
             }
             .untilDestroy()
@@ -203,6 +208,8 @@ class TimerScreenPm : BaseScreenPm() {
     }
 
     private fun stopTimer() {
+        class TaskNameIsEmptyException : Exception()
+
         val currentTimeRecord = timerModel.currentTimeRecord()
             .firstOrError()
             .toMaybeValue()
@@ -212,14 +219,39 @@ class TimerScreenPm : BaseScreenPm() {
             .toMaybeValue()
 
         zip(currentTimeRecord, currentTask)
+            .toObservable()
+            .withLatestFrom(taskNameInputControl.text.observable)
+            .flatMapMaybe { (currentTimeRecordAndTask, taskNameInput) ->
+                val timeRecord = currentTimeRecordAndTask.first
+                val task = currentTimeRecordAndTask.second
+
+                when {
+                    taskNameInput.isBlank() -> {
+                        Maybe.error(TaskNameIsEmptyException())
+                    }
+                    task.name != taskNameInput -> {
+                        timerModel.edit(timeRecord.id, taskNameInput)
+                            .andThen(zip(currentTimeRecord, currentTask))
+                    }
+                    else -> {
+                        Maybe.just(currentTimeRecordAndTask)
+                    }
+                }
+            }
             .flatMapSingle { (currentTimeRecord, currentTask) ->
                 timerModel.stop(currentTimeRecord.id)
                     .toSingleDefault(currentTimeRecord to currentTask)
             }
-            .subscribe { (savedTimeRecord, savedTask) ->
-                cancelableSavedTimeRecords.add(savedTimeRecord)
-                showTaskSavedMsg.consumer.accept(savedTask)
-            }
+            .subscribe(
+                { (savedTimeRecord, savedTask) ->
+                    cancelableSavedTimeRecords.add(savedTimeRecord)
+                    showTaskSavedMsg.consumer.accept(savedTask)
+                }, { throwable ->
+                    if (throwable is TaskNameIsEmptyException) {
+                        shakeTaskName.consumer.accept(Unit)
+                    }
+                }
+            )
             .untilDestroy()
     }
 }

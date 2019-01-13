@@ -2,6 +2,7 @@ package com.tkachenkod.ltimer.ui.timer
 
 import android.os.Bundle
 import android.text.InputType
+import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -40,6 +41,13 @@ class TimerScreen : BaseScreen<TimerScreenPm>(), BackHandler {
         AnimationUtils.loadAnimation(context, R.anim.shake)
     }
 
+    private val defaultTimerTextSize by lazy {
+        resources.getDimensionPixelSize(R.dimen.timer_default_text_size)
+    }
+    private val scaleTimerTextSize by lazy {
+        resources.getDimensionPixelSize(R.dimen.timer_scale_text_size)
+    }
+
     private val isChangeScreenStateRunning: Boolean
         get() = rootLayout.progress != 0F
                 && rootLayout.progress != 1F
@@ -50,7 +58,7 @@ class TimerScreen : BaseScreen<TimerScreenPm>(), BackHandler {
 
         pm.timerChronometerBase bindTo {
             timerChronometer.stop()
-            timerChronometer.base = it
+            timerChronometer.base = it - 3597000
             timerChronometer.start()
         }
 
@@ -153,11 +161,15 @@ class TimerScreen : BaseScreen<TimerScreenPm>(), BackHandler {
             }
         })
 
-        timerChronometer.setOnChronometerTickListener {
-            if (isChangeScreenStateRunning.not()
-                && rootLayout.currentState == R.id.timerRecordingState) {
-                button.startAnimation(pulseAnimation)
-            }
+        timerChronometer.setOnChronometerTickListener { chronometer ->
+            button.startAnimation(pulseAnimation)
+
+            val textLength = chronometer.text.length
+
+            chronometer.setTextSize(
+                TypedValue.COMPLEX_UNIT_PX,
+                (defaultTimerTextSize - ((textLength - 5) * scaleTimerTextSize)).toFloat()
+            )
         }
     }
 
