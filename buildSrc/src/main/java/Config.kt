@@ -3,7 +3,7 @@ object Config {
 
     object Versions {
         val kotlin_version = "1.3.11"
-        val android_plugin_version = "3.4.0-alpha10"
+        val android_plugin_version = "3.5.0-alpha01"
 
         val support_lib = "28.0.0"
         val androidx_appcompat = "1.0.2"

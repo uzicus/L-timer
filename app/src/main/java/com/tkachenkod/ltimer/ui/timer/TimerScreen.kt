@@ -52,6 +52,41 @@ class TimerScreen : BaseScreen<TimerScreenPm>(), BackHandler {
         get() = rootLayout.progress != 0F
                 && rootLayout.progress != 1F
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        with(lastTasksRecyclerView) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = lastTasksAdapter
+        }
+
+        taskEdit.imeOptions = EditorInfo.IME_ACTION_DONE
+        taskEdit.setRawInputType(InputType.TYPE_CLASS_TEXT)
+
+        rootLayout.setTransitionListener(object : MotionLayout.TransitionListener {
+            override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {}
+            override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {}
+            override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {}
+
+            override fun onTransitionCompleted(motionLayout: MotionLayout, stateId: Int) {
+                if (stateId == R.id.timerEmptyState) {
+                    rootLayout.transitionToState(R.id.timerReadyState)
+                }
+            }
+        })
+
+        timerChronometer.setOnChronometerTickListener { chronometer ->
+            button.startAnimation(pulseAnimation)
+
+            val textLength = chronometer.text.length
+
+            chronometer.setTextSize(
+                TypedValue.COMPLEX_UNIT_PX,
+                (defaultTimerTextSize - ((textLength - 5) * scaleTimerTextSize)).toFloat()
+            )
+        }
+    }
+
     override fun onBindPresentationModel(pm: TimerScreenPm) {
         pm.taskName bindTo taskText::setText
         pm.taskNameInputControl bindTo taskInput
@@ -102,6 +137,10 @@ class TimerScreen : BaseScreen<TimerScreenPm>(), BackHandler {
             lastTasksRecyclerView.isInvisible = lastTasks.isEmpty()
 
             lastTasksAdapter.updateItems(lastTasks)
+
+            lastTasksRecyclerView.post {
+                lastTasksRecyclerView?.smoothScrollToPosition(0)
+            }
         }
 
         pm.shakeTaskName bindTo {
@@ -136,41 +175,6 @@ class TimerScreen : BaseScreen<TimerScreenPm>(), BackHandler {
             .filter { it == EditorInfo.IME_ACTION_DONE }
             .map { Unit }
             .bindTo(pm.taskNameActionDone)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        with(lastTasksRecyclerView) {
-            layoutManager = LinearLayoutManager(context)
-            adapter = lastTasksAdapter
-        }
-
-        taskEdit.imeOptions = EditorInfo.IME_ACTION_DONE
-        taskEdit.setRawInputType(InputType.TYPE_CLASS_TEXT)
-
-        rootLayout.setTransitionListener(object : MotionLayout.TransitionListener {
-            override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {}
-            override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {}
-            override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {}
-
-            override fun onTransitionCompleted(motionLayout: MotionLayout, stateId: Int) {
-                if (stateId == R.id.timerEmptyState) {
-                    rootLayout.transitionToState(R.id.timerReadyState)
-                }
-            }
-        })
-
-        timerChronometer.setOnChronometerTickListener { chronometer ->
-            button.startAnimation(pulseAnimation)
-
-            val textLength = chronometer.text.length
-
-            chronometer.setTextSize(
-                TypedValue.COMPLEX_UNIT_PX,
-                (defaultTimerTextSize - ((textLength - 5) * scaleTimerTextSize)).toFloat()
-            )
-        }
     }
 
     inner class LastTasksAdapter : BaseListAdapter<Task, LastTasksAdapter.LastTaskViewHolder>() {

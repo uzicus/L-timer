@@ -15,6 +15,10 @@ import me.dmdev.rxpm.widget.inputControl
 
 class TimerScreenPm : BaseScreenPm() {
 
+    companion object {
+        private const val LAST_TASKS_COUNT = 10;
+    }
+
     private val timerModel: TimerModel by inject()
 
     private val cancelableSavedTimeRecords = mutableListOf<TimeRecord>()
@@ -79,6 +83,7 @@ class TimerScreenPm : BaseScreenPm() {
 
         timerModel.lastTasks()
             .retry()
+            .map { it.take(LAST_TASKS_COUNT) }
             .subscribe(lastTasks.consumer)
             .untilDestroy()
 

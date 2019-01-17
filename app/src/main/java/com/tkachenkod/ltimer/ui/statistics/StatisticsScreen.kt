@@ -59,6 +59,10 @@ class StatisticsScreen : BaseScreen<StatisticsScreenPm>() {
             contentLayout.isInvisible = tasks.isEmpty()
 
             tasksAdapter.updateItems(tasks)
+
+            statisticsRecyclerView.post {
+                statisticsRecyclerView?.smoothScrollToPosition(0)
+            }
         }
 
         pm.chartTasks bindTo { tasks ->
