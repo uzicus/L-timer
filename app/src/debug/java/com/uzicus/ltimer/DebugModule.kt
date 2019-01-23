@@ -5,6 +5,6 @@ import org.koin.dsl.module.module
 
 object DebugModule: Module by module(definition = {
 
-    single { Debug() }
+    single { Debug(get(), get()) }
 
 })
