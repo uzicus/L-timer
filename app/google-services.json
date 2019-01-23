@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1090498614805",
+    "firebase_url": "https://l-timer.firebaseio.com",
+    "project_id": "l-timer",
+    "storage_bucket": "l-timer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1090498614805:android:28635d0bf804caa8",
+        "android_client_info": {
+          "package_name": "com.uzicus.l_timer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1090498614805-4vudeitvjkoub92c3s6iu1jfrl2re8rk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBro1tpR-Hz3hcKlgptyXhGsWwCNA4ok5U"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

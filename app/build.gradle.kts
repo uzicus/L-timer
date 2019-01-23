@@ -1,9 +1,11 @@
+import Config
 import Config.Android
 import Config.Libs
 import org.gradle.kotlin.dsl.implementation
 
 plugins {
     id("com.android.application")
+    id("io.fabric")
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
@@ -29,8 +31,6 @@ android {
 
     buildTypes {
         getByName("debug") {
-            versionNameSuffix = "-dev"
-            applicationIdSuffix = ".dev"
             isMinifyEnabled = false
             isZipAlignEnabled = false
         }
@@ -64,6 +64,9 @@ android {
 dependencies {
     implementation(Libs.kotlin_stdlib)
 
+    implementation(Libs.firebase_core)
+    implementation(Libs.firebase_crashlitics)
+
     implementation(Libs.support_annotations)
     implementation(Libs.androidx_legacy)
     implementation(Libs.androidx_appcompat)
@@ -96,8 +99,12 @@ dependencies {
     implementation(Libs.MPAndroidChart)
 
     testImplementation(Libs.junit)
+
+    androidTestImplementation(Libs.koin_test)
     androidTestImplementation(Libs.room_test)
     androidTestImplementation(Libs.androidx_arch_core_test)
     androidTestImplementation(Libs.junit_runner)
     androidTestImplementation(Libs.espresso_core)
 }
+
+apply(plugin = "com.google.gms.google-services")
