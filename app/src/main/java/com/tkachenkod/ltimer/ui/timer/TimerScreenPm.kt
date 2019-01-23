@@ -16,7 +16,7 @@ import me.dmdev.rxpm.widget.inputControl
 class TimerScreenPm : BaseScreenPm() {
 
     companion object {
-        private const val LAST_TASKS_COUNT = 10;
+        private const val LAST_TASKS_COUNT = 10
     }
 
     private val timerModel: TimerModel by inject()
@@ -49,8 +49,10 @@ class TimerScreenPm : BaseScreenPm() {
     val lastTasksItemClicks = Action<Task>()
     val cancelSave = Action<Task>()
     val taskSavedMsgDismissed = Action<Task>()
+    val timerTick = Action<Unit>()
 
     val shakeTaskName = Command<Unit>()
+    val pulseButton = Command<Unit>()
     val showTaskSavedMsg = Command<Task>()
 
     override val backAction = Action<Unit>()
@@ -60,6 +62,13 @@ class TimerScreenPm : BaseScreenPm() {
 
         taskName.observable
             .subscribe(taskNameInputControl.text.consumer)
+            .untilDestroy()
+
+        timerTick.observable
+            .withLatestFrom(screenState.observable)
+            .filter { (_, currentScreenState) -> currentScreenState == ScreenState.RECORDING }
+            .map { Unit }
+            .subscribe(pulseButton.consumer)
             .untilDestroy()
 
         timerModel.currentTimeRecord()
@@ -75,7 +84,7 @@ class TimerScreenPm : BaseScreenPm() {
                     screenState.consumer.accept(ScreenState.DASHBOARD)
                 }
 
-                if (currentTimeRecord != null) {
+                if (currentTimeRecord != null && currentScreenState == ScreenState.RECORDING) {
                     timerChronometerBase.consumer.accept(currentTimeRecord.elapsedRealtime)
                 }
             }
