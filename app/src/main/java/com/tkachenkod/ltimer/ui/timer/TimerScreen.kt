@@ -76,7 +76,7 @@ class TimerScreen : BaseScreen<TimerScreenPm>(), BackHandler {
         })
 
         timerChronometer.setOnChronometerTickListener { chronometer ->
-            button.startAnimation(pulseAnimation)
+            Unit passTo presentationModel.timerTick
 
             val textLength = chronometer.text.length
 
@@ -145,6 +145,10 @@ class TimerScreen : BaseScreen<TimerScreenPm>(), BackHandler {
 
         pm.shakeTaskName bindTo {
             taskInput.startAnimation(shakeAnimation)
+        }
+
+        pm.pulseButton bindTo {
+            button.startAnimation(pulseAnimation)
         }
 
         pm.showTaskSavedMsg bindTo { savedTask ->
