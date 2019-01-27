@@ -2,8 +2,8 @@
 object Config {
 
     object Versions {
-        val kotlin_version = "1.3.11"
-        val android_plugin_version = "3.5.0-alpha01"
+        val kotlin_version = "1.3.20"
+        val android_plugin_version = "3.3.0"
         val google_services_plugin_version = "4.2.0"
         val fabric_plugin_version = "1.26.1"
 
@@ -85,8 +85,6 @@ object Config {
         val rxkotlin = "io.reactivex.rxjava2:rxkotlin:${Versions.rxkotlin}"
         val rxrelay = "com.jakewharton.rxrelay2:rxrelay:${Versions.rxrelay}"
         val rxbinding = "com.jakewharton.rxbinding3:rxbinding:${Versions.rxbinding}"
-        val rxbinding_viewpager = "com.jakewharton.rxbinding3:rxbinding-viewpager:${Versions.rxbinding}"
-        val rxbinding_material = "com.jakewharton.rxbinding3:rxbinding-material:${Versions.rxbinding}"
 
         //DI
         val koinAndroid = "org.koin:koin-android:${Versions.koin}"

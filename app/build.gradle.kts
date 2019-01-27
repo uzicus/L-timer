@@ -1,4 +1,3 @@
-import Config
 import Config.Android
 import Config.Libs
 import org.gradle.kotlin.dsl.implementation
@@ -85,11 +84,8 @@ dependencies {
     implementation(Libs.rxkotlin)
     implementation(Libs.rxrelay)
     implementation(Libs.rxbinding)
-    implementation(Libs.rxbinding_viewpager)
-    implementation(Libs.rxbinding_material)
 
     implementation(Libs.koinAndroid)
-    implementation(Libs.koinAndroidViewModel)
 
     implementation(Libs.threetenabp)
 
