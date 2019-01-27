@@ -8,8 +8,6 @@ import com.uzicus.ltimer.ui.BackMessage
 import com.uzicus.ltimer.ui.base.BaseScreenPm
 import com.uzicus.ltimer.utils.toMaybeValue
 import io.reactivex.Completable
-import io.reactivex.Maybe
-import io.reactivex.rxkotlin.Maybes.zip
 import io.reactivex.rxkotlin.withLatestFrom
 import me.dmdev.rxpm.widget.inputControl
 
@@ -77,6 +75,7 @@ class TimerScreenPm : BaseScreenPm() {
                 val currentScreenState = screenState.valueOrNull
 
                 if (currentTimeRecord != null && currentScreenState != ScreenState.ENTERING_TASK) {
+                    timerChronometerBase.consumer.accept(currentTimeRecord.elapsedRealtime)
                     taskNameState.consumer.accept(TaskNameState.SHOWING)
                     screenState.consumer.accept(ScreenState.RECORDING)
                 } else if (currentScreenState != ScreenState.DASHBOARD && currentScreenState != ScreenState.ENTERING_TASK) {
@@ -84,9 +83,7 @@ class TimerScreenPm : BaseScreenPm() {
                     screenState.consumer.accept(ScreenState.DASHBOARD)
                 }
 
-                if (currentTimeRecord != null && currentScreenState == ScreenState.RECORDING) {
-                    timerChronometerBase.consumer.accept(currentTimeRecord.elapsedRealtime)
-                }
+                taskName.consumer.accept(currentTimeRecord?.task?.name.orEmpty())
             }
             .untilDestroy()
 
@@ -94,13 +91,6 @@ class TimerScreenPm : BaseScreenPm() {
             .retry()
             .map { it.take(LAST_TASKS_COUNT) }
             .subscribe(lastTasks.consumer)
-            .untilDestroy()
-
-        timerModel.currentTask()
-            .map { currentTask ->
-                currentTask.valueOrNull?.name.orEmpty()
-            }
-            .subscribe(taskName.consumer)
             .untilDestroy()
 
         buttonClicks.observable
@@ -213,6 +203,13 @@ class TimerScreenPm : BaseScreenPm() {
                 }
             }
             .untilDestroy()
+
+        timerModel.savedTimeRecord()
+            .subscribe {
+                cancelableSavedTimeRecords.add(it)
+                showTaskSavedMsg.consumer.accept(it.task)
+            }
+            .untilDestroy()
     }
 
     private fun startTimer(taskName: String) {
@@ -224,43 +221,30 @@ class TimerScreenPm : BaseScreenPm() {
     private fun stopTimer() {
         class TaskNameIsEmptyException : Exception()
 
-        val currentTimeRecord = timerModel.currentTimeRecord()
+        timerModel.currentTimeRecord()
             .firstOrError()
             .toMaybeValue()
-
-        val currentTask = timerModel.currentTask()
-            .firstOrError()
-            .toMaybeValue()
-
-        zip(currentTimeRecord, currentTask)
             .toObservable()
             .withLatestFrom(taskNameInputControl.text.observable)
-            .flatMapMaybe { (currentTimeRecordAndTask, taskNameInput) ->
-                val timeRecord = currentTimeRecordAndTask.first
-                val task = currentTimeRecordAndTask.second
-
+            .flatMapCompletable { (currentTimeRecord, taskNameInput) ->
                 when {
                     taskNameInput.isBlank() -> {
-                        Maybe.error(TaskNameIsEmptyException())
+                        Completable.error(TaskNameIsEmptyException())
                     }
-                    task.name != taskNameInput -> {
-                        timerModel.edit(timeRecord.id, taskNameInput)
-                            .andThen(zip(currentTimeRecord, currentTask))
+                    currentTimeRecord.task.name != taskNameInput -> {
+                        timerModel.edit(currentTimeRecord.id, taskNameInput)
+                            .andThen(timerModel.stop(currentTimeRecord.id))
                     }
                     else -> {
-                        Maybe.just(currentTimeRecordAndTask)
+                        timerModel.stop(currentTimeRecord.id)
                     }
                 }
             }
-            .flatMapSingle { (currentTimeRecord, currentTask) ->
-                timerModel.stop(currentTimeRecord.id)
-                    .toSingleDefault(currentTimeRecord to currentTask)
-            }
             .subscribe(
-                { (savedTimeRecord, savedTask) ->
-                    cancelableSavedTimeRecords.add(savedTimeRecord)
-                    showTaskSavedMsg.consumer.accept(savedTask)
-                }, { throwable ->
+                {
+                    // nothing
+                },
+                { throwable ->
                     if (throwable is TaskNameIsEmptyException) {
                         shakeTaskName.consumer.accept(Unit)
                     }

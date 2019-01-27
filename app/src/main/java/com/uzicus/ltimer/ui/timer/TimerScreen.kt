@@ -198,7 +198,11 @@ class TimerScreen : BaseScreen<TimerScreenPm>(), BackHandler {
         inner class LastTaskViewHolder(itemView: View) : BaseViewHolder<Task>(itemView) {
 
             init {
-                itemView.setOnClickListener { item passTo presentationModel.lastTasksItemClicks }
+                itemView.setOnClickListener {
+                    if (isChangeScreenStateRunning.not()) {
+                        item passTo presentationModel.lastTasksItemClicks
+                    }
+                }
             }
 
             override fun bind(item: Task) {

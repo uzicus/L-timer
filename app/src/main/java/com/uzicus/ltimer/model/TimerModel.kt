@@ -12,11 +12,9 @@ import com.uzicus.ltimer.utils.Optional
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.rxkotlin.Observables.combineLatest
 import io.reactivex.rxkotlin.zipWith
 import io.reactivex.schedulers.Schedulers
 import org.threeten.bp.OffsetDateTime
-import java.util.concurrent.TimeUnit
 
 @SuppressLint("CheckResult")
 class TimerModel(
@@ -27,16 +25,9 @@ class TimerModel(
 
     private var isColorInitialized: Boolean = false
 
-    private val currentTimer = PublishRelay.create<Optional<TimeRecord>>()
+    private val savedTimeRecord = PublishRelay.create<TimeRecord>()
 
     init {
-
-        combineLatest(
-            Observable.interval(0, 1, TimeUnit.SECONDS),
-            currentTimeRecord()
-        )
-            .map { (_, optionalTimeRecord) -> optionalTimeRecord }
-            .subscribe(currentTimer)
 
         taskDao.taskWithTimeRecords()
             .toObservable()
@@ -78,47 +69,9 @@ class TimerModel(
             }
             .subscribeOn(Schedulers.io())
             .subscribe()
-/*
-        listOf(
-            "work",
-            "games",
-            "skateboard",
-            "eating",
-            "sleeping",
-            "chatting"
-        )
-            .toObservable()
-            .map { Task(name = it) }
-            .flatMapSingle(taskDao::insert)
-            .flatMapSingle(taskDao::getById)
-            .flatMap { task ->
-                (0 until Random.nextInt(50, 1000)).map {
-                    val start = OffsetDateTime.of(
-                        2018,
-                        Random.nextInt(1, 12),
-                        Random.nextInt(1, 25),
-                        Random.nextInt(0, 23),
-                        Random.nextInt(0, 59),
-                        0, 0, ZoneOffset.UTC
-                    )
-                    val end = start.plusMinutes(Random.nextLong(1, 150))
-                    TimeRecord(
-                        startTime = start,
-                        endTime = end,
-                        taskId = task.id
-                    )
-                }
-                    .toObservable()
-                    .flatMapSingle(timeRecordDao::insert)
-            }
-            .subscribeOn(Schedulers.io())
-            .subscribe()
-*/
     }
 
-    fun currentTimerIntervalObservable(): Observable<Optional<TimeRecord>> {
-        return currentTimer.hide()
-    }
+    fun savedTimeRecord(): Observable<TimeRecord> = savedTimeRecord.hide()
 
     fun tasksWithTimeRecords(): Observable<List<TaskWithTimeRecords>> {
         return taskDao.taskWithTimeRecords()
@@ -132,7 +85,7 @@ class TimerModel(
             .map { tasksWithTimeRecords ->
                 tasksWithTimeRecords
                     .filter { it.timeRecords.isNotEmpty() }
-                    .sortedByDescending { it ->
+                    .sortedByDescending {
                         it.timeRecords
                             .map(TimeRecord::startTime)
                             .sorted()
@@ -145,26 +98,13 @@ class TimerModel(
 
     fun currentTimeRecord(): Observable<Optional<TimeRecord>> {
         return timeRecordDao.timeRecords()
+            .distinctUntilChanged()
             .map { allTimeRecords ->
                 allTimeRecords.firstOrNull { it.endTime == null }
                     .let { Optional.ofNullable(it) }
             }
             .subscribeOn(Schedulers.io())
             .toObservable()
-    }
-
-    fun currentTask(): Observable<Optional<Task>> {
-        return currentTimeRecord()
-            .flatMapSingle { optionalCurrentTimeRecord ->
-                when (optionalCurrentTimeRecord) {
-                    is Optional.Some -> {
-                        taskDao.getById(optionalCurrentTimeRecord.value.taskId)
-                            .map { Optional.Some(it) }
-                    }
-                    else -> Single.just(Optional.EMPTY)
-                }
-            }
-            .subscribeOn(Schedulers.io())
     }
 
     fun start(taskName: String): Single<TimeRecord> {
@@ -205,6 +145,8 @@ class TimerModel(
                 )
             }
             .flatMapSingle(timeRecordDao::insert)
+            .flatMap(timeRecordDao::getById)
+            .doOnSuccess(savedTimeRecord::accept)
             .subscribeOn(Schedulers.io())
             .ignoreElement()
     }

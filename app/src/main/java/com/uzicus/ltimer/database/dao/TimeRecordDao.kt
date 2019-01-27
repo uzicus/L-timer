@@ -10,13 +10,16 @@ import io.reactivex.Single
 @Dao
 interface TimeRecordDao {
 
-    @Query("SELECT * FROM time_records")
+    @Transaction
+    @Query("SELECT * FROM time_records JOIN tasks ON relation_task_id = tasks.task_id")
     fun timeRecords(): Flowable<List<TimeRecord>>
 
-    @Query("SELECT * FROM time_records WHERE id = :timeRecordId")
+    @Transaction
+    @Query("SELECT * FROM time_records JOIN tasks ON relation_task_id = tasks.task_id WHERE time_records_id = :timeRecordId")
     fun getById(timeRecordId: Long): Single<TimeRecord>
 
-    @Query("SELECT * FROM time_records WHERE id = :timeRecordId")
+    @Transaction
+    @Query("SELECT * FROM time_records JOIN tasks ON relation_task_id = tasks.task_id WHERE time_records_id = :timeRecordId")
     fun findById(timeRecordId: Long): Maybe<TimeRecord>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

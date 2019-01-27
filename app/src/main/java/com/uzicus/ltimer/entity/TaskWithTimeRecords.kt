@@ -9,7 +9,7 @@ data class TaskWithTimeRecords(
     @Embedded
     val task: Task,
 
-    @Relation(parentColumn = "id", entityColumn = "task_id")
+    @Relation(parentColumn = "task_id", entityColumn = "relation_task_id")
     val timeRecords: List<TimeRecord>
 
 ) {
