@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Base.V26.AppTheme"/>
+
+    <style name="Base.V26.AppTheme" parent="Base.V23.AppTheme">
+        <item name="android:fontStyle">@font/montserrat_bold</item>
+    </style>
+
+</resources>
