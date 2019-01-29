@@ -32,11 +32,13 @@ android {
         getByName("debug") {
             isMinifyEnabled = false
             isZipAlignEnabled = false
+            manifestPlaceholders = mapOf("enableCrashReporting" to "false")
         }
 
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles("proguard-rules.pro")
+            manifestPlaceholders = mapOf("enableCrashReporting" to "true")
         }
     }
 
