@@ -1,27 +1,23 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Base.V21.AppTheme"/>
+
+    <style name="Base.V21.AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="android:statusBarColor">@color/black_translucent_10</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
-        <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">@color/black_translucent_15</item>
-        <item name="android:navigationBarColor">@android:color/white</item>
+        <item name="android:statusBarColor">@color/black_translucent_50</item>
         <item name="android:windowBackground">@android:color/white</item>
-        <item name="android:colorControlNormal">@color/colorControlNormal</item>
-        <item name="android:colorControlActivated">@color/colorControlActivated</item>
-        <item name="android:textColorHint">?android:colorControlNormal</item>
-        <item name="android:fontStyle" tools:targetApi="o">@font/montserrat_bold</item>
-        
-        <item name="android:textViewStyle">@style/AppTextViewStyle</item>
-        <item name="android:buttonStyle">@style/AppButtonStyle</item>
 
         <item name="android:colorEdgeEffect">@android:color/white</item>
+        <item name="android:colorControlNormal">@color/colorControlNormal</item>
+        <item name="android:colorControlActivated">@color/colorControlActivated</item>
+
+        <item name="android:textColorHint">?android:colorControlNormal</item>
+        <item name="android:textViewStyle">@style/AppTextViewStyle</item>
+
+        <item name="android:buttonStyle">@style/AppButtonStyle</item>
     </style>
 
     <style name="AppTheme.Launcher">
@@ -30,7 +26,6 @@
     
     <style name="AppTextViewStyle" parent="android:Widget.TextView">
         <item name="android:fontFamily">@font/montserrat_bold</item>
-
     </style>
 
     <style name="AppButtonStyle" parent="android:Widget.Button">
