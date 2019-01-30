@@ -84,9 +84,14 @@ class TimerModel(
         return tasksWithTimeRecords()
             .map { tasksWithTimeRecords ->
                 tasksWithTimeRecords
-                    .filter { it.timeRecords.isNotEmpty() }
+                    .filter {
+                        it.timeRecords.any { timeRecord ->
+                            timeRecord.endTime != null
+                        }
+                    }
                     .sortedByDescending {
                         it.timeRecords
+                            .filter { it.endTime != null }
                             .map(TimeRecord::startTime)
                             .sorted()
                             .lastOrNull()
