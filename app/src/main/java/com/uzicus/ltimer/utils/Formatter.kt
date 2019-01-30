@@ -12,6 +12,10 @@ object Formatter {
 
     fun durationFormat(durationInSecond: Long): String {
         return when {
+            durationInSecond < 60 -> String.format(
+                "%ds",
+                durationInSecond
+            )
             durationInSecond < 3600 -> String.format(
                 "%dm",
                durationInSecond % 3600 / 60
@@ -28,13 +32,5 @@ object Formatter {
                 durationInSecond % 3600 / 60
             )
         }
-    }
-
-    fun timerFormat(durationInSecond: Long): String {
-        return String.format(
-            "%02d:%02d",
-            durationInSecond % 3600 / 60,
-            durationInSecond % 60
-        )
     }
 }
