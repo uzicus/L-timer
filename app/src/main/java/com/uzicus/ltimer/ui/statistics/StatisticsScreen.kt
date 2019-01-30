@@ -126,6 +126,7 @@ class StatisticsScreen : BaseScreen<StatisticsScreenPm>() {
 
                 if (item.color != null) {
                     statisticsTaskColorView.background.mutate().setTint(item.color)
+                    statisticsTaskNameText.setTextColor(item.color)
                 }
             }
 
