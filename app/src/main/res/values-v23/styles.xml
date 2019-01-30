@@ -4,6 +4,7 @@
     <style name="AppTheme" parent="Base.V23.AppTheme"/>
 
     <style name="Base.V23.AppTheme" parent="Base.V21.AppTheme">
+        <item name="android:statusBarColor">@color/black_translucent_10</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
