@@ -55,7 +55,7 @@ object Config {
         val compileSdk = 28
         val minSdk = 21
         val targetSdk = 28
-        val versionName = "0.1-alpha1"
+        val versionName = "1.0"
         val versionCode = System.getenv("TRAVIS_BUILD_NUMBER")?.toInt() ?: 1
     }
 
