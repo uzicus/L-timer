@@ -28,6 +28,17 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
+    signingConfigs {
+        create("release") {
+            if (System.getenv("CI") == "true") {
+                storeFile = file("../ltimer.jks")
+                storePassword = System.getenv("keystore_password")
+                keyAlias = System.getenv("keystore_alias")
+                keyPassword = System.getenv("keystore_alias_password")
+            }
+        }
+    }
+
     buildTypes {
         getByName("debug") {
             isMinifyEnabled = false
@@ -39,6 +50,7 @@ android {
             isMinifyEnabled = false
             proguardFiles("proguard-rules.pro")
             manifestPlaceholders = mapOf("enableCrashReporting" to "true")
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 
