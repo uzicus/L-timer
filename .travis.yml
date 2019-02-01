@@ -1,52 +1,61 @@
 sudo: required
-
 language: android
-
 jdk: oraclejdk8
-
 branches:
   only:
-    - master
-    - develop
-
+  - master
+  - develop
 env:
   global:
-    - ANROID_API_LEVEL = "28"
-    - ANDROID_BUILD_TOOLS_VERSION = "28.0.3"
-
+    secure: 0sGO6JwG1T3fDN0lcfiUCzSEi7U/MixqHljUiIlphtglnSuLlgR7XhnS+bpoWOaVdHucUgquI+kj9MsLDBNN4r2pM6rWhqNVtd/7Z/zrRQ1/rdQm5c6G4gDLXB9sCnI2ao8Gyh+b+MeiEk27LUSyWpF1sL6cOpSx4oTHKY+mUHwA3E/NJ1UfpPAgntw2eE6ech4/naOfwY26l20l8PRoUaADmFC6ey6myuPkL5OjuZ/2S/mWfummXd7mG73kULdvVM/WpIBXfipP+GNnu8kb4wTerY3IvedA8wBMNnhBc2voQpO90ozCQjAjGahrvGgOZjZwysHCL+2mflri8lUxxe6rMMwNqtEmX6hEO0FY/5gNy3x2bI9NEd6rcnm6UITtX+ONl+KLCaknj84owVdPXIpmFcwxb4ZgiLNp+qEXyHyqwK04SaWInFlWP9i6t8F4H7yAbJSnZ3uSEvL090lUoIclZdPKSMcGUcQ2NSSFT08Pv9DF1aAuB9HUSdxXv1VyS6EeV+nnjhPME066s3MNwYMtyfrGht9Xjj3b+kOr7eIIvPArNkpzHaGAnA7ZSJL/eNQBeYaHoMzUEvnxXE4JTnKAq1DP49l+rC3uyvXNbrYzRIAKGzAAQRN3llXDhLxDb6TkZ96nFu8MKgpC+AMBBA+UdOZv/2JO0yT/31S7dJ0=
+  - ANROID_API_LEVEL = "28"
+  - ANDROID_BUILD_TOOLS_VERSION = "28.0.3"
 android:
   components:
-    - tools
-    - platform-tools
-    - build-tools-$ANDROID_BUILD_TOOLS_VERSION
-    - android - $ANDROID_API_LEVEL
-    - extra-google-google_play_services
-    - extra-google-m2repository
-    - extra-android-m2repository
-    - addon-google_apis-google-$ANDROID_API_LEVEL
+  - tools
+  - platform-tools
+  - build-tools-$ANDROID_BUILD_TOOLS_VERSION
+  - android - $ANDROID_API_LEVEL
+  - extra-google-google_play_services
+  - extra-google-m2repository
+  - extra-android-m2repository
+  - addon-google_apis-google-$ANDROID_API_LEVEL
   licenses:
-    - 'android-sdk-preview-license-.+'
-    - 'android-sdk-license-.+'
-    - 'google-gdk-license-.+'
-
+  - android-sdk-preview-license-.+
+  - android-sdk-license-.+
+  - google-gdk-license-.+
 before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
-    - $HOME/.android/build-cache
-
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
+  - "$HOME/.android/build-cache"
 script:
-  - echo 'Start CI script...'
-  - wget -O build.sh $BUILD_SCRIPT_URL
-  - chmod +x ./build.sh
-  - bash ./build.sh '' gradle=v3
-  - rm ./build.sh
-  - echo '...completed'
-
+- echo 'Start CI script...'
+- wget -O build.sh $BUILD_SCRIPT_URL
+- chmod +x ./build.sh
+- bash ./build.sh '' gradle=v3
+- rm ./build.sh
+- echo '...completed'
 before_install:
-  - yes | sdkmanager "platforms;android-28"
-  - chmod +x gradlew
+- openssl aes-256-cbc -K $encrypted_c61861239201_key -iv $encrypted_c61861239201_iv
+  -in ltimer.jks.enc -out ltimer.jks -d
+- yes | sdkmanager "platforms;android-28"
+- chmod +x gradlew
+
+before_deploy:
+- scripts/tag.sh
+
+deploy:
+  provider: releases
+  on:
+    branch: master
+  file: app/build/outputs/apk/release/app-release.apk
+  overwrite: true
+  skip_cleanup: true
+  api_key:
+    secure: xW0gMJ4zZJWFTRYyMhPKd6YKWy2FRiUlyUfbuENdj6TxmzA7VeRgs56NdDiabgnC/YME+MkSpAvls+oLXIPjZ7jeJ2UU34qRmEiAXpNOLhxSDwWi9tsk2VLlKJhrKdiPxXVIIVnkuAw4PEl2xGUuXhgrLazeQq2x+CgYeIyeiDdM6ygIJRpReVQEZkVV4cASmCXwJ+97iqP8qeHnFCAEJti+2CrAieT9menjvxOUawDa6aocvnZI0JKnzT7ZRCfxm88LzsJsyP9xWrRJFNgsCILyHmmdy6uVwAabAYFkAqpgPrNSXJ7/i5voJFzygJTsmOmxzNMGbXE/cbjLP1Ol2CFnMKNgF54vAfaLDJp+QuuJzSVSW/j4TcXRvU3mvZ+eq1Moxkck1wn2iecm/QMNmkBO9w5KV7IrAR7cisZjrLSmF7xtFA5U4TiIf5WmTvGj5MrURGL2bzn3g5A+U4V14+LDNzwGVq/2jetNSJEW0nTeu5rDY3whvuxUa300lq9v9zd7GI5JovH5Bj8e641Rm7jDf8fuLBYnkjvPest+FBR8CjFl+L0dEXciC3alBvdryCjRHk5gOuVNvTbFMzyxzyC9rT3of0/pktMw3tYhP+68ne2Cyb22Te0SMEOKd+AXko4wGewx/Tb0YiL5UV7i06LHRawJzk8I3GaCwJwU67c=
+
+
