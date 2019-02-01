@@ -1,19 +1,16 @@
 sudo: required
 language: android
 jdk: oraclejdk8
-
 branches:
   only:
   - master
   - develop
   - release
-
 env:
   global:
   - ANROID_API_LEVEL = "28"
   - ANDROID_BUILD_TOOLS_VERSION = "28.0.3"
-  - secure: "EqR1qKyu9+zhHP8coutUitVoOLcdWTQGlaK6UxFGiFokkr15CM23F311h+PsCp7rT03uhxV+/8NJdltKwt8c8eJ/0VwAu0joNn97fzJ3mXBb6Z+iQFf2uc8fsojCbRm+wxTx5+hkcwykxJJuYgfDhCuzcfjmi1HUie3Jq5VNzdLIxnAy/rO1O8GvQ+NYPQC0oDV+yjfCJV8uXR6+uVYbVEP2CcEPVKH+9p6GUrhlKQW38nK6+t54ZV8OpadZ3nmy8PNDsje/y2L/Q88nKoawiiYl4l13RPFoI+WSBzjnHbL1uSbWAYsg8i1bAjoudIRw1mX4W7bOU0kkw9U7X23nsmXgIKaZtw/esvNJ4aMRzPuWGniACgnYfm8T4O7gWYpN6H8/bmaVA14Ls73a564LZyFKuieaXnNKxn2nkwSJL86iR1QKocp8XJY1va3egEmyOkKvCwwzs5EVJqRfZky0bfoIN1IEjoIw/nITyM3jRczBpN4Fg9LZ5Yji3Vk3dnHojUa0KNV4T9i25AK9hfFUpfLzV4oAD1NOJHGRBE7T0T4UVk1abwA9DjWnVeXsyeKqbDRu58Z1NUS8pd4BIMnd8xCHnjrwyHG8gKGNC3hAEK+1qlI9/FyBpLYKdrOljU7AlJMs6fCZhAe7GbC17xRVjtxg9pmkcjvpyYwfxYLtLEI="
-
+  - secure: K4DSYneWPAF+Qk3/Wlhc7D6VxJ38P/Pz8FEHS6sy/ptA5AjIHIMd4oxkG5JNnduk7D/61Olatx26TBrzs7P59uJNzPKZh8zlg1tXTi79fcg3m3lFyQow48s+SpTPrDWMH6b7sD74CKPTzs7jyGZR3PhpzkN7sCSSgeiHdOI1y2x6HR+yGdeGT6i+LXMG4GwfHPi1LyaLKo5/f4Xl3hzrNy56/PnfuRETPXO/6U1ptIyjpzgTzqboDzXKsJBRHAADxCN8au1sILInmo93lP1UfxBz/3oJ6lTY2mT+9zaKXm2ExnDm9yQfGC7i7H49uf8vMauyFlMpB/5F+ZXFcUxCfHJM17xwbUK5t58+Yn+v03LBzQ0m2g7ghq/8swo6Qpxd4GZb3q0vancSOB2OcvhjMEsljatt0tjyhaKz5925YlZm6r3finpYffUuAgz4INexNFGU9lfI0UuaQk/zdFHCZ4whkScqCsft67AGGCPfZrEQh80l5ghpmkh+WU8Se1tXKY0MZm5SLuSO+IZJsDWXxP+oJD8R3VgGbI62qqEctA1dBUf57VDZb5VnrzvZu7P+dbnQp5JuA597spDQtYJtDl57QrN1+i+OuPR3BwlSAaw0/m5HizCi65KTkeHUEGCfFPM134RFU7fK2drK0A+nE6RviXHa/fsBzDbJdef6Xg8=
 android:
   components:
   - tools
@@ -48,18 +45,14 @@ before_install:
   -in ltimer.jks.enc -out ltimer.jks -d
 - yes | sdkmanager "platforms;android-28"
 - chmod +x gradlew
-
 before_deploy:
 - scripts/tag.sh
-
 deploy:
   provider: releases
   on:
     branch: master
-  file: "app/build/outputs/apk/release/app-release.apk"
+  file: app/build/outputs/apk/release/app-release.apk
   overwrite: true
   skip_cleanup: true
   api_key:
-    secure: "xW0gMJ4zZJWFTRYyMhPKd6YKWy2FRiUlyUfbuENdj6TxmzA7VeRgs56NdDiabgnC/YME+MkSpAvls+oLXIPjZ7jeJ2UU34qRmEiAXpNOLhxSDwWi9tsk2VLlKJhrKdiPxXVIIVnkuAw4PEl2xGUuXhgrLazeQq2x+CgYeIyeiDdM6ygIJRpReVQEZkVV4cASmCXwJ+97iqP8qeHnFCAEJti+2CrAieT9menjvxOUawDa6aocvnZI0JKnzT7ZRCfxm88LzsJsyP9xWrRJFNgsCILyHmmdy6uVwAabAYFkAqpgPrNSXJ7/i5voJFzygJTsmOmxzNMGbXE/cbjLP1Ol2CFnMKNgF54vAfaLDJp+QuuJzSVSW/j4TcXRvU3mvZ+eq1Moxkck1wn2iecm/QMNmkBO9w5KV7IrAR7cisZjrLSmF7xtFA5U4TiIf5WmTvGj5MrURGL2bzn3g5A+U4V14+LDNzwGVq/2jetNSJEW0nTeu5rDY3whvuxUa300lq9v9zd7GI5JovH5Bj8e641Rm7jDf8fuLBYnkjvPest+FBR8CjFl+L0dEXciC3alBvdryCjRHk5gOuVNvTbFMzyxzyC9rT3of0/pktMw3tYhP+68ne2Cyb22Te0SMEOKd+AXko4wGewx/Tb0YiL5UV7i06LHRawJzk8I3GaCwJwU67c="
-
-
+    secure: ghkOQPSVl8tMINDiRgeirbrkvhm9Sl0AxHvPe/YS0e4JcMslh3VDQN4BpIqXN2AFuGDGq/hwJzO9jcK5q7Nj89qtd9xnyA6r12fXDyFckl969LWcDAPZgUhRS9JYVPNQwbr4SSxjPJM9tskksY2HF1gAnGH9QiGB2VUHRhhfdU/AM5HYQgDv4ssTOLiq/erqykAGsOBbO7TiFk/ofeAE+dffJUB4+0Jzk9VvJ4za7nRHWQJYJTCIHufWq3vMyy4ZWHBRTc0ZXTdfl2NH+zFQs3DxfjTJPlel/pN+3DmaaGB8O8pTqpl/e6XepAoEHF7jYg9vuvV19GkQlc3uVWKpYRIdJw28prTjdbqt3+OdXSYLBhu8a00maEPTDMe2lJG3zZJlBxUO9dPCo+9UIa0hE3vWPxN/GLBqqWO2twCo8+jWxtzKi/SsWFECVW8SbjfKtQdf/IinKb9n2TlycLxB2G6Hk8Wx/EpgIVHTf7D5eNYHyrcZ+AHAG+RQ47che/ugzCfLkTCwzKFJr+eVxItOHFk6TagkgrQzACM8WsWVI4GXP/tpzXL4W3wSmHpPQnXkUzMOMGiajYziSBW+bmpSWSrcM1oB4b0CKpIzc7+zjAV9p6jQvaPMXtO4Jj8NDDRV1Ap+Jzh41rUph6i5tPj+qSD57z8TXOQoBTZ1xn/2now=
