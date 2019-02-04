@@ -43,15 +43,19 @@ android {
         getByName("debug") {
             isMinifyEnabled = false
             isZipAlignEnabled = false
-            manifestPlaceholders = mapOf("enableFirebaseAnalytics" to "false")
-            manifestPlaceholders = mapOf("enableCrashReporting" to "false")
+            manifestPlaceholders = mapOf(
+                "enableCrashReporting" to "false",
+                "enableFirebaseAnalytics" to "false"
+            )
         }
 
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles("proguard-rules.pro")
-            manifestPlaceholders = mapOf("enableFirebaseAnalytics" to "true")
-            manifestPlaceholders = mapOf("enableCrashReporting" to "true")
+            manifestPlaceholders = mapOf(
+                "enableCrashReporting" to "true",
+                "enableFirebaseAnalytics" to "true"
+            )
             signingConfig = signingConfigs.getByName("release")
         }
     }
